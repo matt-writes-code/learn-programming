@@ -582,6 +582,20 @@ footer {
   font-size: 0.82rem;
 }
 
+footer a {
+  color: var(--topic);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+footer a:hover {
+  background: var(--topic);
+  color: #fff;
+}
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 800px) {
   .app {
