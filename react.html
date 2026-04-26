@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-topic="react">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn React — Core Concepts</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+  </head>
+  <body class="app">
+    <div id="progress-bar"></div>
+    <div id="overlay"></div>
+
+    <header id="topbar">
+      <button id="menu-toggle">&#9776;</button>
+      <a href="index.html" class="topbar-brand"
+        ><span class="brand-icon">💻</span> Learn Programming</a
+      >
+      <nav class="topic-pills">
+        <a href="python.html" class="topic-pill">🐍 Python</a>
+        <a href="sql.html" class="topic-pill">🗄️ SQL</a>
+        <a href="git.html" class="topic-pill">⎇ Git</a>
+        <a href="react.html" class="topic-pill active">⚛️ React</a>
+        <a href="svelte.html" class="topic-pill">🔥 Svelte</a>
+        <a href="linux.html" class="topic-pill">🐧 Linux</a>
+      </nav>
+      <button id="theme-toggle">☀️</button>
+    </header>
+
+    <nav id="sidebar">
+      <div class="sidebar-header">⚛️ React</div>
+      <ul class="nav-list">
+        <li><a href="#intro" class="nav-link active">Introduction</a></li>
+        <li><a href="#jsx" class="nav-link">JSX</a></li>
+        <li><a href="#components" class="nav-link">Components</a></li>
+        <li><a href="#props" class="nav-link">Props</a></li>
+        <li><a href="#state" class="nav-link">State (useState)</a></li>
+        <li><a href="#effects" class="nav-link">Effects (useEffect)</a></li>
+        <li><a href="#events" class="nav-link">Event Handling</a></li>
+        <li><a href="#lists" class="nav-link">Lists &amp; Keys</a></li>
+        <li>
+          <a href="#conditional" class="nav-link">Conditional Rendering</a>
+        </li>
+        <li><a href="#forms" class="nav-link">Forms</a></li>
+        <li><a href="#context" class="nav-link">Context API</a></li>
+        <li><a href="#reducer" class="nav-link">useReducer</a></li>
+        <li><a href="#ref" class="nav-link">useRef</a></li>
+        <li><a href="#memo" class="nav-link">useMemo &amp; useCallback</a></li>
+        <li><a href="#custom-hooks" class="nav-link">Custom Hooks</a></li>
+        <li><a href="#patterns" class="nav-link">Patterns</a></li>
+        <li><a href="#performance" class="nav-link">Performance</a></li>
+      </ul>
+    </nav>
+
+    <main id="content">
+      <section id="intro">
+        <h1>React</h1>
+        <p class="topic-intro">
+          A JavaScript library for building user interfaces via composable
+          components. Developed by Meta. Uses a virtual DOM for efficient UI
+          updates.
+        </p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Component-based</h3>
+            <p>Encapsulated components that manage their own state.</p>
+          </div>
+          <div class="info-card">
+            <h3>Declarative</h3>
+            <p>Describe what the UI should look like, React handles updates.</p>
+          </div>
+          <div class="info-card">
+            <h3>Unidirectional</h3>
+            <p>Data flows down. Events bubble up.</p>
+          </div>
+          <div class="info-card">
+            <h3>Hooks</h3>
+            <p>Functions to use state and lifecycle in function components.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="jsx">
+        <h2>JSX</h2>
+        <p>
+          JSX is a syntax extension that looks like HTML inside JavaScript. It
+          compiles to <code>React.createElement()</code> calls.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>jsx.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// JSX — HTML-like syntax in JS</span>
+<span class="kw">const</span> element = <span class="tag">&lt;h1</span> <span class="attr">className</span>=<span class="str">"title"</span><span class="tag">&gt;</span>Hello World<span class="tag">&lt;/h1&gt;</span>;
+
+<span class="cm">// Embed expressions with { }</span>
+<span class="kw">const</span> name = <span class="str">"Alice"</span>;
+<span class="kw">const</span> el = <span class="tag">&lt;p&gt;</span>Hello, <span class="fn">{name}</span>!<span class="tag">&lt;/p&gt;</span>;
+
+<span class="cm">// All tags must be closed</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"logo.png"</span> <span class="attr">alt</span>=<span class="str">"Logo"</span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;br</span> <span class="tag">/&gt;</span>
+
+<span class="cm">// className instead of class, htmlFor instead of for</span>
+<span class="tag">&lt;label</span> <span class="attr">htmlFor</span>=<span class="str">"email"</span><span class="tag">&gt;</span>Email<span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">id</span>=<span class="str">"email"</span> <span class="attr">className</span>=<span class="str">"input"</span> <span class="tag">/&gt;</span>
+
+<span class="cm">// Style as object</span>
+<span class="kw">const</span> style = { color: <span class="str">'red'</span>, fontSize: <span class="str">'16px'</span> };
+<span class="tag">&lt;div</span> <span class="attr">style</span>=<span class="fn">{style}</span><span class="tag">&gt;</span>Styled<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">// JSX must have one root element — use Fragment to avoid extra DOM</span>
+<span class="kw">return</span> (
+  <span class="tag">&lt;&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Title<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;p&gt;</span>Body<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/&gt;</span>
+);</code></pre>
+        </div>
+      </section>
+
+      <section id="components">
+        <h2>Components</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>components.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Function component (modern, preferred)</span>
+<span class="kw">function</span> <span class="fn">Greeting</span>({ name }) {
+  <span class="kw">return</span> <span class="tag">&lt;h1&gt;</span>Hello, <span class="fn">{name}</span>!<span class="tag">&lt;/h1&gt;</span>;
+}
+
+<span class="cm">// Arrow function component</span>
+<span class="kw">const</span> <span class="fn">Card</span> = ({ title, children }) =&gt; (
+  <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"card"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h2&gt;</span><span class="fn">{title}</span><span class="tag">&lt;/h2&gt;</span>
+    <span class="fn">{children}</span>
+  <span class="tag">&lt;/div&gt;</span>
+);
+
+<span class="cm">// Compose components</span>
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;Greeting</span> <span class="attr">name</span>=<span class="str">"Alice"</span> <span class="tag">/&gt;</span>
+      <span class="tag">&lt;Card</span> <span class="attr">title</span>=<span class="str">"My Card"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;p&gt;</span>Card content goes here<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/Card&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  );
+}
+
+<span class="cm">// Component names must start with capital letter</span>
+<span class="cm">// lowercase = HTML element, Uppercase = React component</span></code></pre>
+        </div>
+      </section>
+
+      <section id="props">
+        <h2>Props</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>props.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Props are read-only inputs to a component</span>
+<span class="kw">function</span> <span class="fn">Button</span>({ label, onClick, variant = <span class="str">'primary'</span>, disabled = <span class="kw">false</span> }) {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;button</span>
+      <span class="attr">className</span>=<span class="fn">{`btn btn-${variant}`}</span>
+      <span class="attr">onClick</span>=<span class="fn">{onClick}</span>
+      <span class="attr">disabled</span>=<span class="fn">{disabled}</span>
+    <span class="tag">&gt;</span>
+      <span class="fn">{label}</span>
+    <span class="tag">&lt;/button&gt;</span>
+  );
+}
+
+<span class="cm">// Spread props pattern</span>
+<span class="kw">function</span> <span class="fn">Input</span>({ label, ...rest }) {
+  <span class="kw">return</span> <span class="tag">&lt;input</span> <span class="attr">aria-label</span>=<span class="fn">{label}</span> <span class="fn">{...rest}</span> <span class="tag">/&gt;</span>;
+}
+
+<span class="cm">// Children prop</span>
+<span class="kw">function</span> <span class="fn">Section</span>({ title, children }) {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;section&gt;</span>
+      <span class="tag">&lt;h2&gt;</span><span class="fn">{title}</span><span class="tag">&lt;/h2&gt;</span>
+      <span class="fn">{children}</span>
+    <span class="tag">&lt;/section&gt;</span>
+  );
+}
+
+<span class="cm">// Pass anything as props: string, number, function, object, JSX</span>
+<span class="tag">&lt;Button</span>
+  <span class="attr">label</span>=<span class="str">"Submit"</span>
+  <span class="attr">variant</span>=<span class="str">"secondary"</span>
+  <span class="attr">onClick</span>=<span class="fn">{() =&gt; console.log('clicked')}</span>
+<span class="tag">/&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="state">
+        <h2>State (useState)</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>useState.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> { useState } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">function</span> <span class="fn">Counter</span>() {
+  <span class="cm">// [value, setter] — setter triggers re-render</span>
+  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="num">0</span>);
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;p&gt;</span>Count: <span class="fn">{count}</span><span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">onClick</span>=<span class="fn">{() =&gt; setCount(count + 1)}</span><span class="tag">&gt;</span>+<span class="tag">&lt;/button&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">onClick</span>=<span class="fn">{() =&gt; setCount(c =&gt; c - 1)}</span><span class="tag">&gt;</span>-<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  );
+}
+
+<span class="cm">// Object state — must spread to preserve other fields</span>
+<span class="kw">const</span> [user, setUser] = <span class="fn">useState</span>({ name: <span class="str">''</span>, age: <span class="num">0</span> });
+<span class="fn">setUser</span>(u =&gt; ({ ...u, name: <span class="str">'Alice'</span> }));
+
+<span class="cm">// Lazy initializer — runs once on mount</span>
+<span class="kw">const</span> [data] = <span class="fn">useState</span>(() =&gt; JSON.<span class="fn">parse</span>(localStorage.<span class="fn">getItem</span>(<span class="str">'data'</span>)));
+
+<span class="cm">// Never mutate state directly:</span>
+<span class="cm">// ❌  count++</span>
+<span class="cm">// ✅  setCount(c =&gt; c + 1)</span></code></pre>
+        </div>
+      </section>
+
+      <section id="effects">
+        <h2>Effects (useEffect)</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>useEffect.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> { useState, useEffect } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">function</span> <span class="fn">Profile</span>({ userId }) {
+  <span class="kw">const</span> [user, setUser] = <span class="fn">useState</span>(<span class="kw">null</span>);
+
+  <span class="cm">// Runs after render when userId changes</span>
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">let</span> cancelled = <span class="kw">false</span>;
+
+    <span class="kw">async function</span> <span class="fn">load</span>() {
+      <span class="kw">const</span> data = <span class="kw">await</span> <span class="fn">fetchUser</span>(userId);
+      <span class="kw">if</span> (!cancelled) <span class="fn">setUser</span>(data);
+    }
+
+    <span class="fn">load</span>();
+    <span class="kw">return</span> () =&gt; { cancelled = <span class="kw">true</span>; };  <span class="cm">// cleanup on unmount/re-run</span>
+  }, [userId]);  <span class="cm">// dependency array</span>
+
+  <span class="kw">if</span> (!user) <span class="kw">return</span> <span class="tag">&lt;p&gt;</span>Loading…<span class="tag">&lt;/p&gt;</span>;
+  <span class="kw">return</span> <span class="tag">&lt;p&gt;</span><span class="fn">{user.name}</span><span class="tag">&lt;/p&gt;</span>;
+}
+
+<span class="cm">// Dependency array behaviour:</span>
+<span class="cm">// useEffect(fn)          — runs after every render</span>
+<span class="cm">// useEffect(fn, [])      — runs once on mount</span>
+<span class="cm">// useEffect(fn, [a, b])  — runs when a or b changes</span>
+
+<span class="cm">// Event listener cleanup pattern</span>
+<span class="fn">useEffect</span>(() =&gt; {
+  <span class="kw">const</span> handler = (e) =&gt; <span class="fn">setKey</span>(e.key);
+  window.<span class="fn">addEventListener</span>(<span class="str">'keydown'</span>, handler);
+  <span class="kw">return</span> () =&gt; window.<span class="fn">removeEventListener</span>(<span class="str">'keydown'</span>, handler);
+}, []);</code></pre>
+        </div>
+      </section>
+
+      <section id="events">
+        <h2>Event Handling</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>events.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// React uses camelCase event names, passes SyntheticEvent</span>
+<span class="tag">&lt;button</span> <span class="attr">onClick</span>=<span class="fn">{handleClick}</span><span class="tag">&gt;</span>Click<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;input</span>  <span class="attr">onChange</span>=<span class="fn">{handleChange}</span><span class="tag">/&gt;</span>
+<span class="tag">&lt;form</span>   <span class="attr">onSubmit</span>=<span class="fn">{handleSubmit}</span><span class="tag">&gt;</span>...<span class="tag">&lt;/form&gt;</span>
+
+<span class="kw">function</span> <span class="fn">handleClick</span>(event) {
+  event.<span class="fn">preventDefault</span>();   <span class="cm">// prevent default browser action</span>
+  event.<span class="fn">stopPropagation</span>(); <span class="cm">// prevent bubbling</span>
+  <span class="fn">console</span>.<span class="fn">log</span>(event.target);
+}
+
+<span class="cm">// Pass data to handler</span>
+<span class="fn">{items.map</span>(item =&gt; (
+  <span class="tag">&lt;button</span> <span class="attr">onClick</span>=<span class="fn">{() =&gt; handleDelete(item.id)}</span> <span class="attr">key</span>=<span class="fn">{item.id}</span><span class="tag">&gt;</span>
+    Delete <span class="fn">{item.name}</span>
+  <span class="tag">&lt;/button&gt;</span>
+))}</code></pre>
+        </div>
+      </section>
+
+      <section id="lists">
+        <h2>Lists &amp; Keys</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>lists.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Render a list — every item needs a unique key</span>
+<span class="kw">function</span> <span class="fn">TodoList</span>({ todos }) {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;ul&gt;</span>
+      <span class="fn">{todos.map</span>(todo =&gt; (
+        <span class="tag">&lt;li</span> <span class="attr">key</span>=<span class="fn">{todo.id}</span><span class="tag">&gt;</span>
+          <span class="fn">{todo.text}</span>
+        <span class="tag">&lt;/li&gt;</span>
+      ))}
+    <span class="tag">&lt;/ul&gt;</span>
+  );
+}
+
+<span class="cm">// Key rules:</span>
+<span class="cm">// ✅  Use stable, unique IDs (todo.id, user.email)</span>
+<span class="cm">// ❌  Don't use array index if list can be reordered/filtered</span>
+<span class="cm">// ❌  Don't use random keys — defeats reconciliation</span>
+
+<span class="cm">// Filtering &amp; transforming before rendering</span>
+<span class="kw">const</span> activeTodos = todos
+  .<span class="fn">filter</span>(t =&gt; !t.done)
+  .<span class="fn">map</span>(t =&gt; <span class="tag">&lt;TodoItem</span> <span class="attr">key</span>=<span class="fn">{t.id}</span> <span class="attr">todo</span>=<span class="fn">{t}</span> <span class="tag">/&gt;</span>);</code></pre>
+        </div>
+      </section>
+
+      <section id="conditional">
+        <h2>Conditional Rendering</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>conditional.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Ternary</span>
+<span class="fn">{isLoggedIn</span> ? <span class="tag">&lt;Dashboard</span> <span class="tag">/&gt;</span> : <span class="tag">&lt;Login</span> <span class="tag">/&gt;</span>}
+
+<span class="cm">// && — renders right side only if left is truthy</span>
+<span class="fn">{error</span> &amp;&amp; <span class="tag">&lt;ErrorBanner</span> <span class="attr">message</span>=<span class="fn">{error}</span> <span class="tag">/&gt;</span>}
+<span class="fn">{items.length</span> &gt; <span class="num">0</span> &amp;&amp; <span class="tag">&lt;ItemList</span> <span class="attr">items</span>=<span class="fn">{items}</span> <span class="tag">/&gt;</span>}
+
+<span class="cm">// Returning null renders nothing</span>
+<span class="kw">if</span> (!visible) <span class="kw">return null</span>;
+
+<span class="cm">// if/else in component body</span>
+<span class="kw">function</span> <span class="fn">Status</span>({ status }) {
+  <span class="kw">if</span> (status === <span class="str">'loading'</span>) <span class="kw">return</span> <span class="tag">&lt;Spinner</span> <span class="tag">/&gt;</span>;
+  <span class="kw">if</span> (status === <span class="str">'error'</span>)   <span class="kw">return</span> <span class="tag">&lt;Error</span> <span class="tag">/&gt;</span>;
+  <span class="kw">return</span> <span class="tag">&lt;Content</span> <span class="tag">/&gt;</span>;
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="forms">
+        <h2>Forms</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>forms.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Controlled inputs — React owns the value</span>
+<span class="kw">function</span> <span class="fn">LoginForm</span>() {
+  <span class="kw">const</span> [form, setForm] = <span class="fn">useState</span>({ email: <span class="str">''</span>, password: <span class="str">''</span> });
+
+  <span class="kw">const</span> <span class="fn">handleChange</span> = (e) =&gt;
+    <span class="fn">setForm</span>(f =&gt; ({ ...f, [e.target.name]: e.target.value }));
+
+  <span class="kw">const</span> <span class="fn">handleSubmit</span> = (e) =&gt; {
+    e.<span class="fn">preventDefault</span>();
+    <span class="fn">console</span>.<span class="fn">log</span>(form);
+  };
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;form</span> <span class="attr">onSubmit</span>=<span class="fn">{handleSubmit}</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;input</span>
+        <span class="attr">name</span>=<span class="str">"email"</span>
+        <span class="attr">type</span>=<span class="str">"email"</span>
+        <span class="attr">value</span>=<span class="fn">{form.email}</span>
+        <span class="attr">onChange</span>=<span class="fn">{handleChange}</span>
+      <span class="tag">/&gt;</span>
+      <span class="tag">&lt;input</span>
+        <span class="attr">name</span>=<span class="str">"password"</span>
+        <span class="attr">type</span>=<span class="str">"password"</span>
+        <span class="attr">value</span>=<span class="fn">{form.password}</span>
+        <span class="attr">onChange</span>=<span class="fn">{handleChange}</span>
+      <span class="tag">/&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="str">"submit"</span><span class="tag">&gt;</span>Login<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/form&gt;</span>
+  );
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="context">
+        <h2>Context API</h2>
+        <p>
+          Context shares data across the component tree without prop-drilling.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>context.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> { createContext, useContext, useState } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="cm">// 1. Create context with default value</span>
+<span class="kw">const</span> ThemeContext = <span class="fn">createContext</span>(<span class="str">'light'</span>);
+
+<span class="cm">// 2. Provide value high in the tree</span>
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">const</span> [theme, setTheme] = <span class="fn">useState</span>(<span class="str">'dark'</span>);
+  <span class="kw">return</span> (
+    <span class="tag">&lt;ThemeContext.Provider</span> <span class="attr">value</span>=<span class="fn">{theme}</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;Page</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/ThemeContext.Provider&gt;</span>
+  );
+}
+
+<span class="cm">// 3. Consume anywhere in the tree</span>
+<span class="kw">function</span> <span class="fn">Page</span>() {
+  <span class="kw">const</span> theme = <span class="fn">useContext</span>(ThemeContext);
+  <span class="kw">return</span> <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="fn">{theme}</span><span class="tag">&gt;</span>Page content<span class="tag">&lt;/div&gt;</span>;
+}
+
+<span class="cm">// Custom hook wrapper (idiomatic)</span>
+<span class="kw">function</span> <span class="fn">useTheme</span>() {
+  <span class="kw">const</span> ctx = <span class="fn">useContext</span>(ThemeContext);
+  <span class="kw">if</span> (!ctx) <span class="kw">throw new</span> Error(<span class="str">'useTheme must be inside ThemeProvider'</span>);
+  <span class="kw">return</span> ctx;
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="reducer">
+        <h2>useReducer</h2>
+        <p>
+          Better than <code>useState</code> when state logic is complex or next
+          state depends on previous.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>useReducer.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> { useReducer } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">const</span> <span class="fn">reducer</span> = (state, action) =&gt; {
+  <span class="kw">switch</span> (action.type) {
+    <span class="kw">case</span> <span class="str">'increment'</span>: <span class="kw">return</span> { count: state.count + <span class="num">1</span> };
+    <span class="kw">case</span> <span class="str">'decrement'</span>: <span class="kw">return</span> { count: state.count - <span class="num">1</span> };
+    <span class="kw">case</span> <span class="str">'reset'</span>:     <span class="kw">return</span> { count: <span class="num">0</span> };
+    <span class="kw">default</span>: <span class="kw">return</span> state;
+  }
+};
+
+<span class="kw">function</span> <span class="fn">Counter</span>() {
+  <span class="kw">const</span> [state, dispatch] = <span class="fn">useReducer</span>(reducer, { count: <span class="num">0</span> });
+  <span class="kw">return</span> (
+    <span class="tag">&lt;&gt;</span>
+      <span class="tag">&lt;p&gt;</span><span class="fn">{state.count}</span><span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">onClick</span>=<span class="fn">{() =&gt; dispatch({ type: 'increment' })}</span><span class="tag">&gt;</span>+<span class="tag">&lt;/button&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">onClick</span>=<span class="fn">{() =&gt; dispatch({ type: 'reset' })}</span><span class="tag">&gt;</span>Reset<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/&gt;</span>
+  );
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="ref">
+        <h2>useRef</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>useRef.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> { useRef, useEffect } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="cm">// DOM reference</span>
+<span class="kw">function</span> <span class="fn">FocusInput</span>() {
+  <span class="kw">const</span> inputRef = <span class="fn">useRef</span>(<span class="kw">null</span>);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    inputRef.current.<span class="fn">focus</span>();   <span class="cm">// focus on mount</span>
+  }, []);
+
+  <span class="kw">return</span> <span class="tag">&lt;input</span> <span class="attr">ref</span>=<span class="fn">{inputRef}</span> <span class="tag">/&gt;</span>;
+}
+
+<span class="cm">// Mutable value that doesn't trigger re-render</span>
+<span class="kw">function</span> <span class="fn">Timer</span>() {
+  <span class="kw">const</span> intervalRef = <span class="fn">useRef</span>(<span class="kw">null</span>);
+
+  <span class="kw">const</span> <span class="fn">start</span> = () =&gt; {
+    intervalRef.current = <span class="fn">setInterval</span>(() =&gt; <span class="fn">tick</span>(), <span class="num">1000</span>);
+  };
+
+  <span class="kw">const</span> <span class="fn">stop</span> = () =&gt; <span class="fn">clearInterval</span>(intervalRef.current);
+
+  <span class="kw">return</span> <span class="tag">&lt;&gt;&lt;button</span> <span class="attr">onClick</span>=<span class="fn">{start}</span><span class="tag">&gt;</span>Start<span class="tag">&lt;/button&gt;&lt;button</span> <span class="attr">onClick</span>=<span class="fn">{stop}</span><span class="tag">&gt;</span>Stop<span class="tag">&lt;/button&gt;&lt;/&gt;</span>;
+}
+
+<span class="cm">// Previous value pattern</span>
+<span class="kw">function</span> <span class="fn">usePrevious</span>(value) {
+  <span class="kw">const</span> ref = <span class="fn">useRef</span>();
+  <span class="fn">useEffect</span>(() =&gt; { ref.current = value; });
+  <span class="kw">return</span> ref.current;
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="memo">
+        <h2>useMemo &amp; useCallback</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>memo.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> { useMemo, useCallback, memo } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="cm">// useMemo — cache expensive computation</span>
+<span class="kw">const</span> sortedItems = <span class="fn">useMemo</span>(
+  () =&gt; [...items].<span class="fn">sort</span>((a, b) =&gt; a.price - b.price),
+  [items]   <span class="cm">// recompute only when items changes</span>
+);
+
+<span class="cm">// useCallback — stable function reference (for prop equality)</span>
+<span class="kw">const</span> handleDelete = <span class="fn">useCallback</span>(
+  (id) =&gt; <span class="fn">setItems</span>(prev =&gt; prev.<span class="fn">filter</span>(i =&gt; i.id !== id)),
+  []
+);
+
+<span class="cm">// React.memo — skip re-render if props unchanged</span>
+<span class="kw">const</span> <span class="fn">ItemRow</span> = <span class="fn">memo</span>(<span class="kw">function</span> <span class="fn">ItemRow</span>({ item, onDelete }) {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div&gt;</span>
+      <span class="fn">{item.name}</span>
+      <span class="tag">&lt;button</span> <span class="attr">onClick</span>=<span class="fn">{() =&gt; onDelete(item.id)}</span><span class="tag">&gt;</span>×<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  );
+});
+
+<span class="cm">// Rule: only add memoization when profiling shows a real problem.</span>
+<span class="cm">// Premature optimization adds complexity for no gain.</span></code></pre>
+        </div>
+      </section>
+
+      <section id="custom-hooks">
+        <h2>Custom Hooks</h2>
+        <p>
+          Extract reusable stateful logic into functions starting with
+          <code>use</code>.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>customHooks.js</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// useFetch — generic data fetching</span>
+<span class="kw">function</span> <span class="fn">useFetch</span>(url) {
+  <span class="kw">const</span> [data,    setData]    = <span class="fn">useState</span>(<span class="kw">null</span>);
+  <span class="kw">const</span> [loading, setLoading] = <span class="fn">useState</span>(<span class="kw">true</span>);
+  <span class="kw">const</span> [error,   setError]   = <span class="fn">useState</span>(<span class="kw">null</span>);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">let</span> cancelled = <span class="kw">false</span>;
+    <span class="fn">fetch</span>(url)
+      .<span class="fn">then</span>(r =&gt; r.<span class="fn">json</span>())
+      .<span class="fn">then</span>(d =&gt; { <span class="kw">if</span> (!cancelled) <span class="fn">setData</span>(d); })
+      .<span class="fn">catch</span>(e =&gt; { <span class="kw">if</span> (!cancelled) <span class="fn">setError</span>(e); })
+      .<span class="fn">finally</span>(() =&gt; { <span class="kw">if</span> (!cancelled) <span class="fn">setLoading</span>(<span class="kw">false</span>); });
+    <span class="kw">return</span> () =&gt; { cancelled = <span class="kw">true</span>; };
+  }, [url]);
+
+  <span class="kw">return</span> { data, loading, error };
+}
+
+<span class="cm">// useLocalStorage</span>
+<span class="kw">function</span> <span class="fn">useLocalStorage</span>(key, initial) {
+  <span class="kw">const</span> [value, setValue] = <span class="fn">useState</span>(
+    () =&gt; JSON.<span class="fn">parse</span>(localStorage.<span class="fn">getItem</span>(key)) ?? initial
+  );
+  <span class="kw">const</span> <span class="fn">set</span> = v =&gt; { <span class="fn">setValue</span>(v); localStorage.<span class="fn">setItem</span>(key, JSON.<span class="fn">stringify</span>(v)); };
+  <span class="kw">return</span> [value, set];
+}
+
+<span class="cm">// useDebounce</span>
+<span class="kw">function</span> <span class="fn">useDebounce</span>(value, delay = <span class="num">300</span>) {
+  <span class="kw">const</span> [debounced, setDebounced] = <span class="fn">useState</span>(value);
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> t = <span class="fn">setTimeout</span>(() =&gt; <span class="fn">setDebounced</span>(value), delay);
+    <span class="kw">return</span> () =&gt; <span class="fn">clearTimeout</span>(t);
+  }, [value, delay]);
+  <span class="kw">return</span> debounced;
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="patterns">
+        <h2>Patterns</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>patterns.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Compound components — shared implicit state</span>
+<span class="kw">function</span> <span class="fn">Tabs</span>({ children, defaultTab }) {
+  <span class="kw">const</span> [active, setActive] = <span class="fn">useState</span>(defaultTab);
+  <span class="kw">return</span> (
+    <span class="tag">&lt;TabContext.Provider</span> <span class="attr">value</span>=<span class="fn">{{ active, setActive }}</span><span class="tag">&gt;</span>
+      <span class="fn">{children}</span>
+    <span class="tag">&lt;/TabContext.Provider&gt;</span>
+  );
+}
+
+<span class="cm">// Render props — pass rendering logic as a prop</span>
+<span class="tag">&lt;DataProvider</span> <span class="attr">render</span>=<span class="fn">{(data) =&gt; &lt;Chart data={data} /&gt;}</span> <span class="tag">/&gt;</span>
+
+<span class="cm">// Higher-Order Component (HOC)</span>
+<span class="kw">function</span> <span class="fn">withAuth</span>(Component) {
+  <span class="kw">return function</span> <span class="fn">AuthGuard</span>(props) {
+    <span class="kw">const</span> { user } = <span class="fn">useAuth</span>();
+    <span class="kw">if</span> (!user) <span class="kw">return</span> <span class="tag">&lt;Redirect</span> <span class="attr">to</span>=<span class="str">"/login"</span> <span class="tag">/&gt;</span>;
+    <span class="kw">return</span> <span class="tag">&lt;Component</span> <span class="fn">{...props}</span> <span class="attr">user</span>=<span class="fn">{user}</span> <span class="tag">/&gt;</span>;
+  };
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="performance">
+        <h2>Performance</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>performance.jsx</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Code splitting with lazy + Suspense</span>
+<span class="kw">import</span> { lazy, Suspense } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">const</span> Dashboard = <span class="fn">lazy</span>(() =&gt; <span class="kw">import</span>(<span class="str">'./Dashboard'</span>));
+
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;Suspense</span> <span class="attr">fallback</span>=<span class="fn">{&lt;Spinner /&gt;}</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;Dashboard</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/Suspense&gt;</span>
+  );
+}
+
+<span class="cm">// Virtualize long lists with react-window</span>
+<span class="kw">import</span> { FixedSizeList } <span class="kw">from</span> <span class="str">'react-window'</span>;
+
+<span class="tag">&lt;FixedSizeList</span>
+  <span class="attr">height</span>=<span class="fn">{600}</span>
+  <span class="attr">itemCount</span>=<span class="fn">{10000}</span>
+  <span class="attr">itemSize</span>=<span class="fn">{48}</span>
+<span class="tag">&gt;</span>
+  <span class="fn">{Row}</span>
+<span class="tag">&lt;/FixedSizeList&gt;</span>
+
+<span class="cm">// Profiling in DevTools:</span>
+<span class="cm">// React DevTools → Profiler tab → Record</span>
+<span class="cm">// Look for: unnecessary re-renders, slow commits</span>
+
+<span class="cm">// Batching (React 18): multiple setState calls</span>
+<span class="cm">// are automatically batched even in async code</span></code></pre>
+        </div>
+      </section>
+
+      <footer>
+        <p>← <a href="index.html">Back to Home</a></p>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

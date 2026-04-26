@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-topic="python">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn Python — Core Concepts</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+  </head>
+  <body class="app">
+    <div id="progress-bar"></div>
+    <div id="overlay"></div>
+
+    <!-- Top bar -->
+    <header id="topbar">
+      <button id="menu-toggle">&#9776;</button>
+      <a href="index.html" class="topbar-brand"
+        ><span class="brand-icon">💻</span> Learn Programming</a
+      >
+      <nav class="topic-pills">
+        <a href="python.html" class="topic-pill active">🐍 Python</a>
+        <a href="sql.html" class="topic-pill">🗄️ SQL</a>
+        <a href="git.html" class="topic-pill">⎇ Git</a>
+        <a href="react.html" class="topic-pill">⚛️ React</a>
+        <a href="svelte.html" class="topic-pill">🔥 Svelte</a>
+        <a href="linux.html" class="topic-pill">🐧 Linux</a>
+      </nav>
+      <button id="theme-toggle">☀️</button>
+    </header>
+
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="sidebar-header">🐍 Python</div>
+      <ul class="nav-list">
+        <li><a href="#intro" class="nav-link active">Introduction</a></li>
+        <li><a href="#variables" class="nav-link">Variables &amp; Types</a></li>
+        <li><a href="#operators" class="nav-link">Operators</a></li>
+        <li><a href="#strings" class="nav-link">Strings</a></li>
+        <li><a href="#control" class="nav-link">Control Flow</a></li>
+        <li><a href="#loops" class="nav-link">Loops</a></li>
+        <li><a href="#functions" class="nav-link">Functions</a></li>
+        <li><a href="#data-structs" class="nav-link">Data Structures</a></li>
+        <li><a href="#comprehensions" class="nav-link">Comprehensions</a></li>
+        <li><a href="#oop" class="nav-link">OOP &amp; Classes</a></li>
+        <li><a href="#exceptions" class="nav-link">Exceptions</a></li>
+        <li><a href="#fileio" class="nav-link">File I/O</a></li>
+        <li><a href="#modules" class="nav-link">Modules</a></li>
+        <li><a href="#lambdas" class="nav-link">Lambdas &amp; Closures</a></li>
+        <li><a href="#decorators" class="nav-link">Decorators</a></li>
+        <li><a href="#generators" class="nav-link">Generators</a></li>
+        <li><a href="#context" class="nav-link">Context Managers</a></li>
+        <li><a href="#typing" class="nav-link">Type Hints</a></li>
+        <li><a href="#concurrency" class="nav-link">Concurrency</a></li>
+      </ul>
+    </nav>
+
+    <!-- Content -->
+    <main id="content">
+      <section id="intro">
+        <h1>Python</h1>
+        <p class="topic-intro">
+          A high-level, interpreted, dynamically typed language built for
+          readability. Used everywhere from scripts to large-scale web apps,
+          data science, and AI.
+        </p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Interpreted</h3>
+            <p>Executes line-by-line. No compile step.</p>
+          </div>
+          <div class="info-card">
+            <h3>Dynamic Typing</h3>
+            <p>Types resolved at runtime, not declared upfront.</p>
+          </div>
+          <div class="info-card">
+            <h3>Indentation-based</h3>
+            <p>Blocks use indentation, not curly braces.</p>
+          </div>
+          <div class="info-card">
+            <h3>Batteries Included</h3>
+            <p>Rich standard library for most common tasks.</p>
+          </div>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>hello.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Your first Python program</span>
+<span class="fn">print</span>(<span class="str">"Hello, World!"</span>)
+
+<span class="kw">import</span> sys
+<span class="fn">print</span>(<span class="str">f"Python <span class="fn">{sys.version}</span>"</span>)</code></pre>
+        </div>
+      </section>
+
+      <section id="variables">
+        <h2>Variables &amp; Data Types</h2>
+        <p>
+          Variables are created on assignment. Python infers types
+          automatically.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Example</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>int</td>
+                <td><code>42, -7, 0xFF</code></td>
+                <td>Arbitrary precision integers</td>
+              </tr>
+              <tr>
+                <td>float</td>
+                <td><code>3.14, 1e-5</code></td>
+                <td>64-bit IEEE 754 double</td>
+              </tr>
+              <tr>
+                <td>complex</td>
+                <td><code>2+3j</code></td>
+                <td>Real + imaginary</td>
+              </tr>
+              <tr>
+                <td>str</td>
+                <td><code>"hello"</code></td>
+                <td>Immutable Unicode sequence</td>
+              </tr>
+              <tr>
+                <td>bool</td>
+                <td><code>True, False</code></td>
+                <td>Subclass of int (1 and 0)</td>
+              </tr>
+              <tr>
+                <td>NoneType</td>
+                <td><code>None</code></td>
+                <td>Absence of a value</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>variables.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code>name    = <span class="str">"Alice"</span>
+age     = <span class="num">30</span>
+pi      = <span class="num">3.14159</span>
+active  = <span class="kw">True</span>
+nothing = <span class="kw">None</span>
+
+<span class="cm"># Multiple assignment</span>
+x, y, z = <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>
+a = b = <span class="num">0</span>
+
+<span class="cm"># Type inspection</span>
+<span class="fn">print</span>(<span class="fn">type</span>(name))    <span class="cm"># &lt;class 'str'&gt;</span>
+<span class="fn">print</span>(<span class="fn">isinstance</span>(age, <span class="fn">int</span>))  <span class="cm"># True</span>
+
+<span class="cm"># Explicit conversion</span>
+<span class="fn">int</span>(<span class="str">"42"</span>), <span class="fn">float</span>(<span class="str">"3.5"</span>), <span class="fn">str</span>(<span class="num">99</span>), <span class="fn">bool</span>(<span class="num">0</span>)
+
+<span class="cm"># Constants (convention only — UPPER_SNAKE_CASE)</span>
+MAX_RETRIES = <span class="num">3</span></code></pre>
+        </div>
+      </section>
+
+      <section id="operators">
+        <h2>Operators</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>operators.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Arithmetic</span>
+<span class="num">10</span> + <span class="num">3</span>   <span class="cm"># 13</span>
+<span class="num">10</span> - <span class="num">3</span>   <span class="cm"># 7</span>
+<span class="num">10</span> * <span class="num">3</span>   <span class="cm"># 30</span>
+<span class="num">10</span> / <span class="num">3</span>   <span class="cm"># 3.333…  (always float)</span>
+<span class="num">10</span> // <span class="num">3</span>  <span class="cm"># 3       (floor division)</span>
+<span class="num">10</span> % <span class="num">3</span>   <span class="cm"># 1       (modulus)</span>
+<span class="num">2</span> ** <span class="num">8</span>   <span class="cm"># 256     (exponentiation)</span>
+
+<span class="cm"># Comparison — always returns bool</span>
+<span class="num">5</span> == <span class="num">5</span>,  <span class="num">5</span> != <span class="num">3</span>,  <span class="num">5</span> &gt; <span class="num">3</span>,  <span class="num">5</span> &lt;= <span class="num">5</span>
+
+<span class="cm"># Logical</span>
+<span class="kw">True</span> <span class="kw">and</span> <span class="kw">False</span>   <span class="cm"># False</span>
+<span class="kw">True</span> <span class="kw">or</span>  <span class="kw">False</span>   <span class="cm"># True</span>
+<span class="kw">not</span> <span class="kw">True</span>         <span class="cm"># False</span>
+
+<span class="cm"># Identity &amp; membership</span>
+x = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+<span class="kw">print</span>(<span class="num">2</span> <span class="kw">in</span> x)        <span class="cm"># True</span>
+<span class="fn">print</span>(x <span class="kw">is</span> x)        <span class="cm"># True  (same object in memory)</span>
+
+<span class="cm"># Bitwise</span>
+<span class="num">0b1010</span> <span class="op">&amp;</span> <span class="num">0b1100</span>   <span class="cm"># 0b1000  (AND)</span>
+<span class="num">0b1010</span> <span class="op">|</span> <span class="num">0b1100</span>   <span class="cm"># 0b1110  (OR)</span>
+<span class="num">1</span> <span class="op">&lt;&lt;</span> <span class="num">4</span>             <span class="cm"># 16      (left shift)</span>
+
+<span class="cm"># Augmented assignment</span>
+n = <span class="num">10</span>; n += <span class="num">5</span>; n //= <span class="num">2</span>   <span class="cm"># n = 7</span>
+
+<span class="cm"># Walrus operator := (Python 3.8+)</span>
+<span class="kw">if</span> (n := <span class="fn">len</span>(<span class="str">"hello"</span>)) &gt; <span class="num">3</span>:
+    <span class="fn">print</span>(<span class="str">f"Long string: <span class="fn">{n}</span>"</span>)</code></pre>
+        </div>
+      </section>
+
+      <section id="strings">
+        <h2>Strings</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>strings.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Literals</span>
+s1 = <span class="str">'single'</span>
+s2 = <span class="str">"double"</span>
+s3 = <span class="str">"""multi
+line"""</span>
+raw = <span class="str">r"C:\Users\no\escape"</span>
+
+<span class="cm"># f-strings (preferred interpolation)</span>
+name, score = <span class="str">"Alice"</span>, <span class="num">95.5</span>
+<span class="fn">print</span>(<span class="str">f"<span class="fn">{name}</span> scored <span class="fn">{score:.1f}</span>%"</span>)
+
+<span class="cm"># Common methods</span>
+s = <span class="str">"  Hello, World!  "</span>
+s.strip()                <span class="cm"># "Hello, World!"</span>
+s.lower() / s.upper()
+s.replace(<span class="str">"World"</span>, <span class="str">"Python"</span>)
+s.split(<span class="str">","</span>)            <span class="cm"># ['  Hello', ' World!  ']</span>
+s.startswith(<span class="str">"  H"</span>)     <span class="cm"># True</span>
+s.find(<span class="str">"World"</span>)         <span class="cm"># 8 (index, -1 if missing)</span>
+s.count(<span class="str">"l"</span>)            <span class="cm"># 3</span>
+
+<span class="cm"># Slicing  [start:stop:step]</span>
+s = <span class="str">"Python"</span>
+s[<span class="num">0</span>:<span class="num">3</span>]   <span class="cm"># "Pyt"</span>
+s[::-<span class="num">1</span>]  <span class="cm"># "nohtyP"</span>
+s[-<span class="num">2</span>:]   <span class="cm"># "on"</span>
+
+<span class="cm"># Join / split idiom</span>
+<span class="str">" "</span>.join([<span class="str">"one"</span>, <span class="str">"two"</span>, <span class="str">"three"</span>])
+
+<span class="cm"># String formatting alternatives</span>
+<span class="str">"{} is {}"</span>.<span class="fn">format</span>(<span class="str">"Python"</span>, <span class="str">"great"</span>)
+<span class="str">"%s is %d"</span> % (<span class="str">"age"</span>, <span class="num">30</span>)   <span class="cm"># old style</span></code></pre>
+        </div>
+      </section>
+
+      <section id="control">
+        <h2>Control Flow</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>control.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># if / elif / else</span>
+score = <span class="num">82</span>
+<span class="kw">if</span>   score >= <span class="num">90</span>: grade = <span class="str">"A"</span>
+<span class="kw">elif</span> score >= <span class="num">80</span>: grade = <span class="str">"B"</span>
+<span class="kw">elif</span> score >= <span class="num">70</span>: grade = <span class="str">"C"</span>
+<span class="kw">else</span>:             grade = <span class="str">"F"</span>
+
+<span class="cm"># Ternary expression</span>
+status = <span class="str">"pass"</span> <span class="kw">if</span> score >= <span class="num">60</span> <span class="kw">else</span> <span class="str">"fail"</span>
+
+<span class="cm"># Truthy / falsy — these all evaluate as False:</span>
+<span class="cm">#  None, 0, 0.0, "", [], {}, set(), ()</span>
+
+<span class="cm"># Structural Pattern Matching (Python 3.10+)</span>
+<span class="kw">match</span> command:
+    <span class="kw">case</span> <span class="str">"quit"</span>:
+        <span class="fn">print</span>(<span class="str">"Bye!"</span>)
+    <span class="kw">case</span> <span class="str">"help"</span> | <span class="str">"?"</span>:
+        <span class="fn">print</span>(<span class="str">"Help…"</span>)
+    <span class="kw">case</span> {<span class="str">"action"</span>: action, <span class="str">"value"</span>: v}:
+        <span class="fn">print</span>(<span class="str">f"Action <span class="fn">{action}</span> with <span class="fn">{v}</span>"</span>)
+    <span class="kw">case</span> _:
+        <span class="fn">print</span>(<span class="str">"Unknown"</span>)</code></pre>
+        </div>
+      </section>
+
+      <section id="loops">
+        <h2>Loops</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>loops.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># for — iterates any iterable</span>
+<span class="kw">for</span> fruit <span class="kw">in</span> [<span class="str">"apple"</span>, <span class="str">"banana"</span>]:
+    <span class="fn">print</span>(fruit)
+
+<span class="cm"># range(start, stop, step)</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">0</span>, <span class="num">10</span>, <span class="num">2</span>): <span class="fn">print</span>(i)   <span class="cm"># 0 2 4 6 8</span>
+
+<span class="cm"># enumerate — index + value</span>
+<span class="kw">for</span> i, val <span class="kw">in</span> <span class="fn">enumerate</span>([<span class="str">"a"</span>, <span class="str">"b"</span>], start=<span class="num">1</span>):
+    <span class="fn">print</span>(i, val)
+
+<span class="cm"># zip — parallel iteration</span>
+<span class="kw">for</span> name, score <span class="kw">in</span> <span class="fn">zip</span>([<span class="str">"Alice"</span>, <span class="str">"Bob"</span>], [<span class="num">90</span>, <span class="num">85</span>]):
+    <span class="fn">print</span>(<span class="str">f"<span class="fn">{name}</span>: <span class="fn">{score}</span>"</span>)
+
+<span class="cm"># while</span>
+count = <span class="num">0</span>
+<span class="kw">while</span> count < <span class="num">5</span>:
+    <span class="fn">print</span>(count)
+    count += <span class="num">1</span>
+
+<span class="cm"># break / continue / for-else</span>
+<span class="kw">for</span> n <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):
+    <span class="kw">if</span> n == <span class="num">3</span>: <span class="kw">continue</span>
+    <span class="kw">if</span> n == <span class="num">7</span>: <span class="kw">break</span>
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"completed"</span>)  <span class="cm"># skipped because of break</span></code></pre>
+        </div>
+      </section>
+
+      <section id="functions">
+        <h2>Functions</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>functions.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Basic function with default parameter</span>
+<span class="kw">def</span> <span class="fn">power</span>(base, exp=<span class="num">2</span>):
+    <span class="kw">return</span> base ** exp
+
+<span class="cm"># *args — variable positional arguments (tuple)</span>
+<span class="kw">def</span> <span class="fn">total</span>(*numbers):
+    <span class="kw">return</span> <span class="fn">sum</span>(numbers)
+
+<span class="cm"># **kwargs — variable keyword arguments (dict)</span>
+<span class="kw">def</span> <span class="fn">profile</span>(**info):
+    <span class="kw">for</span> k, v <span class="kw">in</span> info.items():
+        <span class="fn">print</span>(<span class="str">f"<span class="fn">{k}</span>: <span class="fn">{v}</span>"</span>)
+
+<span class="cm"># Positional-only (/) and keyword-only (*) params</span>
+<span class="kw">def</span> <span class="fn">strict</span>(pos_only, /, normal, *, kw_only):
+    <span class="kw">pass</span>
+
+<span class="cm"># Multiple return values → tuple unpacking</span>
+<span class="kw">def</span> <span class="fn">min_max</span>(nums):
+    <span class="kw">return</span> <span class="fn">min</span>(nums), <span class="fn">max</span>(nums)
+
+lo, hi = <span class="fn">min_max</span>([<span class="num">3</span>, <span class="num">1</span>, <span class="num">9</span>])
+
+<span class="cm"># Unpacking when calling</span>
+args   = [<span class="num">2</span>, <span class="num">8</span>]
+kwargs = {<span class="str">"exp"</span>: <span class="num">3</span>}
+<span class="fn">power</span>(*args)
+<span class="fn">power</span>(<span class="num">2</span>, **kwargs)</code></pre>
+        </div>
+      </section>
+
+      <section id="data-structs">
+        <h2>Data Structures</h2>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="ds-list" data-group="ds">
+            List
+          </button>
+          <button class="tab-btn" data-tab="ds-tuple" data-group="ds">
+            Tuple
+          </button>
+          <button class="tab-btn" data-tab="ds-dict" data-group="ds">
+            Dict
+          </button>
+          <button class="tab-btn" data-tab="ds-set" data-group="ds">Set</button>
+        </div>
+        <div id="tab-ds-list" class="tab-content active" data-group="ds">
+          <div class="code-block">
+            <div class="code-header">
+              <span>list.py</span><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="cm"># Ordered, mutable, allows duplicates</span>
+nums = [<span class="num">3</span>, <span class="num">1</span>, <span class="num">4</span>, <span class="num">1</span>, <span class="num">5</span>]
+nums.append(<span class="num">9</span>)          <span class="cm"># add to end</span>
+nums.insert(<span class="num">0</span>, <span class="num">0</span>)       <span class="cm"># insert at index</span>
+nums.remove(<span class="num">1</span>)          <span class="cm"># remove first occurrence</span>
+nums.pop()              <span class="cm"># remove &amp; return last</span>
+nums.sort()             <span class="cm"># in-place</span>
+<span class="fn">sorted</span>(nums)            <span class="cm"># returns new list</span>
+nums[<span class="num">1</span>:<span class="num">4</span>]               <span class="cm"># slice copy</span>
+<span class="fn">len</span>(nums), <span class="fn">min</span>(nums), <span class="fn">max</span>(nums), <span class="fn">sum</span>(nums)</code></pre>
+          </div>
+        </div>
+        <div id="tab-ds-tuple" class="tab-content" data-group="ds">
+          <div class="code-block">
+            <div class="code-header">
+              <span>tuple.py</span><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="cm"># Ordered, IMMUTABLE</span>
+point = (<span class="num">3</span>, <span class="num">7</span>)
+x, y  = point            <span class="cm"># unpacking</span>
+*rest, last = (<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>)  <span class="cm"># star unpack</span>
+single = (<span class="num">42</span>,)           <span class="cm"># trailing comma required</span>
+
+<span class="kw">from</span> collections <span class="kw">import</span> namedtuple
+Point = <span class="fn">namedtuple</span>(<span class="str">"Point"</span>, [<span class="str">"x"</span>, <span class="str">"y"</span>])
+p = <span class="fn">Point</span>(<span class="num">1</span>, <span class="num">2</span>)
+<span class="fn">print</span>(p.x, p.y)          <span class="cm"># 1 2</span></code></pre>
+          </div>
+        </div>
+        <div id="tab-ds-dict" class="tab-content" data-group="ds">
+          <div class="code-block">
+            <div class="code-header">
+              <span>dict.py</span><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="cm"># Key-value pairs, insertion-ordered (3.7+), mutable</span>
+person = {<span class="str">"name"</span>: <span class="str">"Alice"</span>, <span class="str">"age"</span>: <span class="num">30</span>}
+person[<span class="str">"email"</span>] = <span class="str">"alice@x.com"</span>
+person.get(<span class="str">"missing"</span>, <span class="str">"default"</span>)
+person.update({<span class="str">"city"</span>: <span class="str">"NYC"</span>})
+person.pop(<span class="str">"city"</span>)
+<span class="kw">del</span> person[<span class="str">"email"</span>]
+
+<span class="kw">for</span> k, v <span class="kw">in</span> person.items():
+    <span class="fn">print</span>(k, v)
+
+<span class="cm"># Merge dicts (Python 3.9+)</span>
+merged = {<span class="str">"a"</span>: <span class="num">1</span>} | {<span class="str">"b"</span>: <span class="num">2</span>}
+
+<span class="cm"># defaultdict avoids KeyError on missing keys</span>
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+dd = <span class="fn">defaultdict</span>(<span class="fn">list</span>)
+dd[<span class="str">"key"</span>].append(<span class="num">1</span>)     <span class="cm"># no KeyError</span></code></pre>
+          </div>
+        </div>
+        <div id="tab-ds-set" class="tab-content" data-group="ds">
+          <div class="code-block">
+            <div class="code-header">
+              <span>set.py</span><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="cm"># Unordered, unique elements, mutable</span>
+a = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">2</span>}   <span class="cm"># {1, 2, 3}</span>
+b = {<span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>}
+a.add(<span class="num">5</span>); a.discard(<span class="num">1</span>)
+
+a | b   <span class="cm"># union</span>
+a &amp; b   <span class="cm"># intersection</span>
+a - b   <span class="cm"># difference</span>
+a ^ b   <span class="cm"># symmetric difference</span>
+
+<span class="cm"># Membership is O(1)</span>
+<span class="num">3</span> <span class="kw">in</span> a   <span class="cm"># True</span>
+
+fs = <span class="fn">frozenset</span>([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>])  <span class="cm"># immutable set</span></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="comprehensions">
+        <h2>Comprehensions</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>comprehensions.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># List comprehension: [expr for item in iterable if cond]</span>
+squares = [x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>)]
+evens   = [x    <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">20</span>) <span class="kw">if</span> x % <span class="num">2</span> == <span class="num">0</span>]
+
+<span class="cm"># Dict comprehension</span>
+lengths = {w: <span class="fn">len</span>(w) <span class="kw">for</span> w <span class="kw">in</span> [<span class="str">"apple"</span>, <span class="str">"fig"</span>]}
+<span class="cm"># {'apple': 5, 'fig': 3}</span>
+
+<span class="cm"># Set comprehension</span>
+unique = {x % <span class="num">5</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">20</span>)}
+
+<span class="cm"># Generator expression — lazy, no list in memory</span>
+total = <span class="fn">sum</span>(x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>**<span class="num">6</span>))
+
+<span class="cm"># Nested comprehension</span>
+flat = [v <span class="kw">for</span> row <span class="kw">in</span> matrix <span class="kw">for</span> v <span class="kw">in</span> row]</code></pre>
+        </div>
+      </section>
+
+      <section id="oop">
+        <h2>OOP &amp; Classes</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>oop.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">class</span> <span class="fn">Animal</span>:
+    count = <span class="num">0</span>   <span class="cm"># class attribute</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, name, sound):
+        self.name  = name   <span class="cm"># instance attribute</span>
+        self.sound = sound
+        Animal.count += <span class="num">1</span>
+
+    <span class="kw">def</span> <span class="fn">speak</span>(self):        <span class="cm"># instance method</span>
+        <span class="kw">return</span> <span class="str">f"<span class="fn">{self.name}</span> says <span class="fn">{self.sound}</span>"</span>
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(self):     <span class="cm"># developer representation</span>
+        <span class="kw">return</span> <span class="str">f"Animal(<span class="fn">{self.name!r}</span>)"</span>
+
+    <span class="kw">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">get_count</span>(cls): <span class="kw">return</span> cls.count
+
+    <span class="kw">@staticmethod</span>
+    <span class="kw">def</span> <span class="fn">validate</span>(name): <span class="kw">return</span> <span class="fn">bool</span>(name)
+
+    <span class="kw">@property</span>
+    <span class="kw">def</span> <span class="fn">info</span>(self): <span class="kw">return</span> <span class="str">f"<span class="fn">{self.name}</span> (<span class="fn">{self.sound}</span>)"</span>
+
+
+<span class="cm"># Inheritance</span>
+<span class="kw">class</span> <span class="fn">Dog</span>(Animal):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, name, breed):
+        <span class="fn">super</span>().__init__(name, <span class="str">"woof"</span>)
+        self.breed = breed
+
+    <span class="kw">def</span> <span class="fn">speak</span>(self):         <span class="cm"># override</span>
+        <span class="kw">return</span> <span class="fn">super</span>().<span class="fn">speak</span>() + <span class="str">"!"</span>
+
+
+<span class="cm"># Dataclass — auto __init__, __repr__, __eq__</span>
+<span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass
+
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="fn">Point</span>:
+    x: <span class="fn">float</span>
+    y: <span class="fn">float</span>
+
+    <span class="kw">def</span> <span class="fn">distance</span>(self):
+        <span class="kw">return</span> (self.x**<span class="num">2</span> + self.y**<span class="num">2</span>) ** <span class="num">0.5</span>
+
+<span class="fn">print</span>(<span class="fn">Point</span>(<span class="num">3</span>, <span class="num">4</span>).distance())   <span class="cm"># 5.0</span></code></pre>
+        </div>
+      </section>
+
+      <section id="exceptions">
+        <h2>Exceptions</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>exceptions.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">try</span>:
+    result = <span class="num">10</span> / <span class="fn">int</span>(<span class="str">"0"</span>)
+<span class="kw">except</span> ZeroDivisionError <span class="kw">as</span> e:
+    <span class="fn">print</span>(<span class="str">f"Division error: <span class="fn">{e}</span>"</span>)
+<span class="kw">except</span> (ValueError, TypeError):
+    <span class="fn">print</span>(<span class="str">"Bad value"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"No exception"</span>)   <span class="cm"># runs only on success</span>
+<span class="kw">finally</span>:
+    <span class="fn">print</span>(<span class="str">"Always runs"</span>)    <span class="cm"># cleanup</span>
+
+<span class="cm"># Custom exception</span>
+<span class="kw">class</span> <span class="fn">InsufficientFundsError</span>(ValueError):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, amount, balance):
+        <span class="fn">super</span>().__init__(<span class="str">f"Need <span class="fn">{amount}</span>, have <span class="fn">{balance}</span>"</span>)
+        self.amount  = amount
+        self.balance = balance
+
+<span class="cm"># Exception chaining</span>
+<span class="kw">try</span>:
+    {}[<span class="str">"key"</span>]
+<span class="kw">except</span> KeyError <span class="kw">as</span> e:
+    <span class="kw">raise</span> RuntimeError(<span class="str">"Config missing"</span>) <span class="kw">from</span> e
+
+<span class="cm"># Re-raise</span>
+<span class="kw">try</span>:
+    risky()
+<span class="kw">except</span> Exception:
+    log_error()
+    <span class="kw">raise</span>            <span class="cm"># re-raises original</span></code></pre>
+        </div>
+      </section>
+
+      <section id="fileio">
+        <h2>File I/O</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>file_io.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Text files</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"data.txt"</span>, <span class="str">"w"</span>, encoding=<span class="str">"utf-8"</span>) <span class="kw">as</span> f:
+    f.write(<span class="str">"Hello\n"</span>)
+    f.writelines([<span class="str">"line2\n"</span>, <span class="str">"line3\n"</span>])
+
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"data.txt"</span>) <span class="kw">as</span> f:
+    content = f.read()         <span class="cm"># full string</span>
+    lines   = f.readlines()   <span class="cm"># list of lines</span>
+    <span class="kw">for</span> line <span class="kw">in</span> f:            <span class="cm"># memory-efficient</span>
+        <span class="fn">print</span>(line.rstrip())
+
+<span class="cm"># JSON</span>
+<span class="kw">import</span> json
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"data.json"</span>, <span class="str">"w"</span>) <span class="kw">as</span> f:
+    json.dump({<span class="str">"key"</span>: [<span class="num">1</span>, <span class="num">2</span>]}, f, indent=<span class="num">2</span>)
+
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"data.json"</span>) <span class="kw">as</span> f:
+    data = json.load(f)
+
+<span class="cm"># pathlib — modern path API</span>
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+p = Path(<span class="str">"output"</span>) / <span class="str">"result.txt"</span>
+p.parent.mkdir(parents=<span class="kw">True</span>, exist_ok=<span class="kw">True</span>)
+p.write_text(<span class="str">"done"</span>)
+<span class="fn">print</span>(p.read_text(), p.suffix, p.stem)
+<span class="kw">for</span> f <span class="kw">in</span> Path(<span class="str">"."</span>).glob(<span class="str">"**/*.py"</span>): <span class="fn">print</span>(f)</code></pre>
+        </div>
+      </section>
+
+      <section id="modules">
+        <h2>Modules &amp; Packages</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>modules.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> math
+<span class="kw">from</span> math <span class="kw">import</span> pi, sqrt
+<span class="kw">import</span> numpy <span class="kw">as</span> np          <span class="cm"># alias</span>
+
+<span class="cm"># Key standard library modules</span>
+<span class="kw">import</span> os, sys, re, json
+<span class="kw">import</span> datetime, pathlib
+<span class="kw">import</span> itertools, functools
+<span class="kw">import</span> collections, typing
+
+<span class="cm"># __name__ guard</span>
+<span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:
+    <span class="fn">print</span>(<span class="str">"Running directly"</span>)
+
+<span class="cm"># Package layout</span>
+<span class="cm"># mypackage/</span>
+<span class="cm">#   __init__.py      ← makes it a package</span>
+<span class="cm">#   utils.py</span>
+<span class="cm">#   models/</span>
+<span class="cm">#     __init__.py</span>
+<span class="cm">#     user.py</span>
+
+<span class="kw">from</span> mypackage.models.user <span class="kw">import</span> User   <span class="cm"># absolute</span>
+<span class="kw">from</span> .utils <span class="kw">import</span> helper                <span class="cm"># relative</span>
+
+<span class="cm"># Virtual environments &amp; pip</span>
+<span class="cm"># python -m venv .venv</span>
+<span class="cm"># pip install requests</span>
+<span class="cm"># pip freeze &gt; requirements.txt</span></code></pre>
+        </div>
+      </section>
+
+      <section id="lambdas">
+        <h2>Lambdas &amp; Closures</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>lambdas.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Lambda — anonymous single-expression function</span>
+square = <span class="kw">lambda</span> x: x**<span class="num">2</span>
+add    = <span class="kw">lambda</span> a, b: a + b
+
+<span class="cm"># Use with map / filter / sorted</span>
+nums = [<span class="num">5</span>, <span class="num">2</span>, <span class="num">8</span>, <span class="num">1</span>]
+<span class="fn">list</span>(<span class="fn">map</span>(<span class="kw">lambda</span> x: x**<span class="num">2</span>, nums))
+<span class="fn">list</span>(<span class="fn">filter</span>(<span class="kw">lambda</span> x: x > <span class="num">3</span>, nums))
+<span class="fn">sorted</span>(nums, key=<span class="kw">lambda</span> x: -x)
+
+<span class="cm"># Closure — inner function captures enclosing scope</span>
+<span class="kw">def</span> <span class="fn">make_counter</span>():
+    count = <span class="num">0</span>
+    <span class="kw">def</span> <span class="fn">counter</span>():
+        <span class="kw">nonlocal</span> count
+        count += <span class="num">1</span>
+        <span class="kw">return</span> count
+    <span class="kw">return</span> counter
+
+c = <span class="fn">make_counter</span>()
+<span class="fn">print</span>(<span class="fn">c</span>(), <span class="fn">c</span>(), <span class="fn">c</span>())   <span class="cm"># 1 2 3</span>
+
+<span class="cm"># functools.partial — pre-fill arguments</span>
+<span class="kw">from</span> functools <span class="kw">import</span> partial, reduce
+
+double = <span class="fn">partial</span>(<span class="kw">lambda</span> a, b: a * b, <span class="num">2</span>)
+<span class="fn">print</span>(<span class="fn">double</span>(<span class="num">5</span>))   <span class="cm"># 10</span>
+
+product = <span class="fn">reduce</span>(<span class="kw">lambda</span> a, b: a * b, [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>])  <span class="cm"># 24</span></code></pre>
+        </div>
+      </section>
+
+      <section id="decorators">
+        <h2>Decorators</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>decorators.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> functools, time
+
+<span class="cm"># Decorator = function that wraps another function</span>
+<span class="kw">def</span> <span class="fn">timer</span>(func):
+    <span class="kw">@functools</span>.wraps(func)       <span class="cm"># preserves metadata</span>
+    <span class="kw">def</span> <span class="fn">wrapper</span>(*args, **kwargs):
+        t = time.perf_counter()
+        result = <span class="fn">func</span>(*args, **kwargs)
+        <span class="fn">print</span>(<span class="str">f"<span class="fn">{func.__name__}</span>: <span class="fn">{time.perf_counter()-t:.4f}</span>s"</span>)
+        <span class="kw">return</span> result
+    <span class="kw">return</span> wrapper
+
+<span class="kw">@timer</span>
+<span class="kw">def</span> <span class="fn">slow</span>(): time.sleep(<span class="num">0.1</span>)
+
+<span class="cm"># Decorator factory (decorator with arguments)</span>
+<span class="kw">def</span> <span class="fn">retry</span>(times=<span class="num">3</span>, exceptions=(Exception,)):
+    <span class="kw">def</span> <span class="fn">decorator</span>(func):
+        <span class="kw">@functools</span>.wraps(func)
+        <span class="kw">def</span> <span class="fn">wrapper</span>(*a, **kw):
+            <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(times):
+                <span class="kw">try</span>: <span class="kw">return</span> <span class="fn">func</span>(*a, **kw)
+                <span class="kw">except</span> exceptions:
+                    <span class="kw">if</span> i == times - <span class="num">1</span>: <span class="kw">raise</span>
+        <span class="kw">return</span> wrapper
+    <span class="kw">return</span> decorator
+
+<span class="kw">@retry</span>(times=<span class="num">3</span>, exceptions=(IOError,))
+<span class="kw">def</span> <span class="fn">fetch</span>(url): ...
+
+<span class="cm"># Class decorator</span>
+<span class="kw">@timer</span>
+<span class="kw">@retry</span>(times=<span class="num">2</span>)
+<span class="kw">def</span> <span class="fn">my_func</span>(): ...   <span class="cm"># decorators apply bottom-up</span></code></pre>
+        </div>
+      </section>
+
+      <section id="generators">
+        <h2>Generators</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>generators.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Generator function — yields values lazily</span>
+<span class="kw">def</span> <span class="fn">countdown</span>(n):
+    <span class="kw">while</span> n > <span class="num">0</span>:
+        <span class="kw">yield</span> n
+        n -= <span class="num">1</span>
+
+<span class="kw">for</span> v <span class="kw">in</span> <span class="fn">countdown</span>(<span class="num">5</span>): <span class="fn">print</span>(v)   <span class="cm"># 5 4 3 2 1</span>
+
+<span class="cm"># Infinite generator</span>
+<span class="kw">def</span> <span class="fn">fibonacci</span>():
+    a, b = <span class="num">0</span>, <span class="num">1</span>
+    <span class="kw">while</span> <span class="kw">True</span>:
+        <span class="kw">yield</span> a
+        a, b = b, a + b
+
+<span class="kw">import</span> itertools
+first10 = <span class="fn">list</span>(itertools.islice(<span class="fn">fibonacci</span>(), <span class="num">10</span>))
+
+<span class="cm"># yield from — delegates to sub-generator</span>
+<span class="kw">def</span> <span class="fn">chain</span>(*iters):
+    <span class="kw">for</span> it <span class="kw">in</span> iters:
+        <span class="kw">yield from</span> it
+
+<span class="cm"># send() — two-way communication</span>
+<span class="kw">def</span> <span class="fn">accumulator</span>():
+    total = <span class="num">0</span>
+    <span class="kw">while</span> <span class="kw">True</span>:
+        v = <span class="kw">yield</span> total
+        <span class="kw">if</span> v <span class="kw">is</span> <span class="kw">None</span>: <span class="kw">break</span>
+        total += v
+
+acc = <span class="fn">accumulator</span>()
+<span class="fn">next</span>(acc)           <span class="cm"># prime</span>
+acc.send(<span class="num">10</span>)        <span class="cm"># 10</span>
+acc.send(<span class="num">20</span>)        <span class="cm"># 30</span></code></pre>
+        </div>
+      </section>
+
+      <section id="context">
+        <h2>Context Managers</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>context.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Class-based</span>
+<span class="kw">class</span> <span class="fn">Timer</span>:
+    <span class="kw">import</span> time
+    <span class="kw">def</span> <span class="fn">__enter__</span>(self):
+        self._t = self.time.perf_counter()
+        <span class="kw">return</span> self
+    <span class="kw">def</span> <span class="fn">__exit__</span>(self, *args):
+        <span class="fn">print</span>(<span class="str">f"<span class="fn">{self.time.perf_counter()-self._t:.4f}</span>s"</span>)
+
+<span class="kw">with</span> <span class="fn">Timer</span>():
+    <span class="fn">sum</span>(<span class="fn">range</span>(<span class="num">10</span>**<span class="num">6</span>))
+
+<span class="cm"># Generator-based (simpler)</span>
+<span class="kw">from</span> contextlib <span class="kw">import</span> contextmanager, suppress
+
+<span class="kw">@contextmanager</span>
+<span class="kw">def</span> <span class="fn">db_connection</span>(url):
+    conn = <span class="fn">connect</span>(url)
+    <span class="kw">try</span>:
+        <span class="kw">yield</span> conn
+    <span class="kw">finally</span>:
+        conn.close()    <span class="cm"># always runs</span>
+
+<span class="kw">with</span> <span class="fn">db_connection</span>(<span class="str">"..."</span>) <span class="kw">as</span> db:
+    db.execute(<span class="str">"SELECT 1"</span>)
+
+<span class="cm"># Suppress specific exceptions</span>
+<span class="kw">with</span> <span class="fn">suppress</span>(FileNotFoundError):
+    Path(<span class="str">"missing.txt"</span>).unlink()
+
+<span class="cm"># Multiple context managers</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"a"</span>) <span class="kw">as</span> a, <span class="fn">open</span>(<span class="str">"b"</span>) <span class="kw">as</span> b:
+    b.write(a.read())</code></pre>
+        </div>
+      </section>
+
+      <section id="typing">
+        <h2>Type Hints</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>typing.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">from</span> __future__ <span class="kw">import</span> annotations   <span class="cm"># enables forward refs</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Optional, Union, Any, Callable, TypeVar
+<span class="kw">from</span> collections.abc <span class="kw">import</span> Sequence, Mapping, Iterator
+
+<span class="cm"># Basic annotations</span>
+<span class="kw">def</span> <span class="fn">greet</span>(name: <span class="fn">str</span>, times: <span class="fn">int</span> = <span class="num">1</span>) -> <span class="fn">str</span>:
+    <span class="kw">return</span> (<span class="str">f"Hello <span class="fn">{name}</span>! "</span>) * times
+
+<span class="cm"># Optional (= X | None)</span>
+<span class="kw">def</span> <span class="fn">find</span>(uid: <span class="fn">int</span>) -> Optional[<span class="fn">str</span>]: ...
+
+<span class="cm"># Union — Python 3.10+ shorthand: str | int</span>
+<span class="kw">def</span> <span class="fn">process</span>(val: <span class="fn">str</span> | <span class="fn">int</span>) -> <span class="fn">str</span>: <span class="kw">return</span> <span class="fn">str</span>(val)
+
+<span class="cm"># TypeVar for generics</span>
+T = <span class="fn">TypeVar</span>(<span class="str">"T"</span>)
+<span class="kw">def</span> <span class="fn">first</span>(seq: Sequence[T]) -> T: <span class="kw">return</span> seq[<span class="num">0</span>]
+
+<span class="cm"># TypedDict</span>
+<span class="kw">from</span> typing <span class="kw">import</span> TypedDict
+<span class="kw">class</span> <span class="fn">User</span>(TypedDict):
+    name: <span class="fn">str</span>
+    age: <span class="fn">int</span>
+
+<span class="cm"># Protocol — structural subtyping</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Protocol
+<span class="kw">class</span> <span class="fn">Drawable</span>(Protocol):
+    <span class="kw">def</span> <span class="fn">draw</span>(self) -> <span class="kw">None</span>: ...</code></pre>
+        </div>
+      </section>
+
+      <section id="concurrency">
+        <h2>Concurrency</h2>
+        <div class="callout">
+          <strong>Key insight:</strong> Python's GIL limits true CPU parallelism
+          for threads. Use <code>threading</code> for I/O-bound work,
+          <code>multiprocessing</code> for CPU-bound, and
+          <code>asyncio</code> for high-concurrency I/O.
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>concurrency.py</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># asyncio — concurrent I/O without threads</span>
+<span class="kw">import</span> asyncio
+
+<span class="kw">async def</span> <span class="fn">fetch</span>(url):
+    <span class="kw">await</span> asyncio.sleep(<span class="num">1</span>)   <span class="cm"># simulate I/O</span>
+    <span class="kw">return</span> <span class="str">f"data from <span class="fn">{url}</span>"</span>
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    urls = [<span class="str">"a.com"</span>, <span class="str">"b.com"</span>, <span class="str">"c.com"</span>]
+    results = <span class="kw">await</span> asyncio.gather(*[<span class="fn">fetch</span>(u) <span class="kw">for</span> u <span class="kw">in</span> urls])
+    <span class="fn">print</span>(results)
+
+asyncio.<span class="fn">run</span>(<span class="fn">main</span>())
+
+<span class="cm"># Threading — for I/O-bound tasks</span>
+<span class="kw">import</span> threading
+
+<span class="kw">def</span> <span class="fn">worker</span>(n):
+    <span class="fn">print</span>(<span class="str">f"Thread <span class="fn">{n}</span>"</span>)
+
+threads = [threading.<span class="fn">Thread</span>(target=<span class="fn">worker</span>, args=(i,)) <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">5</span>)]
+<span class="kw">for</span> t <span class="kw">in</span> threads: t.start()
+<span class="kw">for</span> t <span class="kw">in</span> threads: t.join()
+
+<span class="cm"># ProcessPoolExecutor — CPU-bound parallelism</span>
+<span class="kw">from</span> concurrent.futures <span class="kw">import</span> ProcessPoolExecutor
+
+<span class="kw">def</span> <span class="fn">cpu_task</span>(n): <span class="kw">return</span> n ** <span class="num">2</span>
+
+<span class="kw">with</span> <span class="fn">ProcessPoolExecutor</span>() <span class="kw">as</span> pool:
+    results = <span class="fn">list</span>(pool.<span class="fn">map</span>(<span class="fn">cpu_task</span>, <span class="fn">range</span>(<span class="num">100</span>)))</code></pre>
+        </div>
+      </section>
+
+      <footer>
+        <p>← <a href="index.html">Back to Home</a></p>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

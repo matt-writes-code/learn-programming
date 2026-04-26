@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-topic="svelte">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn Svelte — Core Concepts</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+  </head>
+  <body class="app">
+    <div id="progress-bar"></div>
+    <div id="overlay"></div>
+
+    <header id="topbar">
+      <button id="menu-toggle">&#9776;</button>
+      <a href="index.html" class="topbar-brand"
+        ><span class="brand-icon">💻</span> Learn Programming</a
+      >
+      <nav class="topic-pills">
+        <a href="python.html" class="topic-pill">🐍 Python</a>
+        <a href="sql.html" class="topic-pill">🗄️ SQL</a>
+        <a href="git.html" class="topic-pill">⎇ Git</a>
+        <a href="react.html" class="topic-pill">⚛️ React</a>
+        <a href="svelte.html" class="topic-pill active">🔥 Svelte</a>
+        <a href="linux.html" class="topic-pill">🐧 Linux</a>
+      </nav>
+      <button id="theme-toggle">☀️</button>
+    </header>
+
+    <nav id="sidebar">
+      <div class="sidebar-header">🔥 Svelte</div>
+      <ul class="nav-list">
+        <li><a href="#intro" class="nav-link active">Introduction</a></li>
+        <li><a href="#components" class="nav-link">Component Anatomy</a></li>
+        <li><a href="#reactivity" class="nav-link">Reactivity</a></li>
+        <li><a href="#props" class="nav-link">Props</a></li>
+        <li><a href="#logic" class="nav-link">Template Logic</a></li>
+        <li><a href="#events" class="nav-link">Events</a></li>
+        <li><a href="#bindings" class="nav-link">Bindings</a></li>
+        <li><a href="#lifecycle" class="nav-link">Lifecycle</a></li>
+        <li><a href="#stores" class="nav-link">Stores</a></li>
+        <li><a href="#context" class="nav-link">Context</a></li>
+        <li><a href="#slots" class="nav-link">Slots</a></li>
+        <li>
+          <a href="#transitions" class="nav-link"
+            >Transitions &amp; Animations</a
+          >
+        </li>
+        <li><a href="#actions" class="nav-link">Actions</a></li>
+        <li><a href="#special" class="nav-link">Special Elements</a></li>
+        <li><a href="#sveltekit" class="nav-link">SvelteKit</a></li>
+      </ul>
+    </nav>
+
+    <main id="content">
+      <section id="intro">
+        <h1>Svelte</h1>
+        <p class="topic-intro">
+          A compiler-based UI framework — no virtual DOM. Svelte compiles your
+          components to vanilla JS at build time, producing tiny, fast bundles
+          with minimal boilerplate.
+        </p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>No Virtual DOM</h3>
+            <p>Svelte surgically updates the real DOM — no diffing overhead.</p>
+          </div>
+          <div class="info-card">
+            <h3>Compile-time</h3>
+            <p>
+              Components compile away. Zero framework runtime in production.
+            </p>
+          </div>
+          <div class="info-card">
+            <h3>Truly Reactive</h3>
+            <p>Reactivity is built into the language via assignments.</p>
+          </div>
+          <div class="info-card">
+            <h3>Less Code</h3>
+            <p>Significantly fewer lines than equivalent React or Vue code.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="components">
+        <h2>Component Anatomy</h2>
+        <p>
+          Every <code>.svelte</code> file is a self-contained component with
+          three optional sections.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>MyComponent.svelte</span
+            ><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="cm">// Component logic — runs once on creation</span>
+  <span class="kw">let</span> name = <span class="str">'World'</span>;
+  <span class="kw">let</span> count = <span class="num">0</span>;
+
+  <span class="kw">function</span> <span class="fn">increment</span>() {
+    count += <span class="num">1</span>;  <span class="cm">// assignment triggers reactivity</span>
+  }
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- Template — HTML + Svelte directives --&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Hello, <span class="fn">{name}</span>!<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">on:click</span>=<span class="fn">{increment}</span><span class="tag">&gt;</span>Count: <span class="fn">{count}</span><span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;style&gt;</span>
+  <span class="cm">/* Scoped by default — won't leak to other components */</span>
+  h1 {
+    color: coral;
+    font-size: 2rem;
+  }
+<span class="tag">&lt;/style&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="reactivity">
+        <h2>Reactivity</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>reactivity.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="kw">let</span> width  = <span class="num">10</span>;
+  <span class="kw">let</span> height = <span class="num">5</span>;
+
+  <span class="cm">// Reactive declaration — recomputes when dependencies change</span>
+  $: area = width * height;
+  $: perimeter = <span class="num">2</span> * (width + height);
+
+  <span class="cm">// Reactive statement — runs as a side-effect</span>
+  $: <span class="fn">console</span>.<span class="fn">log</span>(`Area changed to <span class="fn">${area}</span>`);
+
+  <span class="cm">// Reactive block</span>
+  $: {
+    <span class="kw">if</span> (area > <span class="num">100</span>) {
+      <span class="fn">alert</span>(<span class="str">'Very large!'</span>);
+    }
+  }
+
+  <span class="cm">// Arrays and objects: must reassign to trigger reactivity</span>
+  <span class="kw">let</span> items = [<span class="str">'a'</span>, <span class="str">'b'</span>];
+
+  <span class="cm">// ❌ items.push('c') — Svelte can't detect this</span>
+  <span class="cm">// ✅ items = [...items, 'c']</span>
+  <span class="kw">function</span> <span class="fn">addItem</span>() {
+    items = [...items, <span class="str">'c'</span>];
+  }
+
+  <span class="cm">// Shorthand for object mutation</span>
+  <span class="kw">let</span> user = { name: <span class="str">'Alice'</span>, age: <span class="num">30</span> };
+  <span class="kw">function</span> <span class="fn">birthday</span>() {
+    user.age += <span class="num">1</span>;
+    user = user;  <span class="cm">// triggers reactivity (Svelte 4)</span>
+  }
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="tag">&lt;p&gt;</span>Width: <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"number"</span> <span class="attr">bind:value</span>=<span class="fn">{width}</span><span class="tag">&gt;&lt;/p&gt;</span>
+<span class="tag">&lt;p&gt;</span>Area: <span class="fn">{area}</span><span class="tag">&lt;/p&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="props">
+        <h2>Props</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>Button.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="cm">// Export makes it a prop</span>
+  <span class="kw">export let</span> label;
+  <span class="kw">export let</span> variant = <span class="str">'primary'</span>;  <span class="cm">// default value</span>
+  <span class="kw">export let</span> disabled = <span class="kw">false</span>;
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="tag">&lt;button</span>
+  <span class="attr">class</span>=<span class="fn">{`btn btn-${variant}`}</span>
+  <span class="fn">{disabled}</span>
+<span class="tag">&gt;</span>
+  <span class="fn">{label}</span>
+<span class="tag">&lt;/button&gt;</span></code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>Usage in parent</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="kw">import</span> Button <span class="kw">from</span> <span class="str">'./Button.svelte'</span>;
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="tag">&lt;Button</span> <span class="attr">label</span>=<span class="str">"Submit"</span> <span class="attr">variant</span>=<span class="str">"secondary"</span> <span class="tag">/&gt;</span>
+
+<span class="cm">&lt;!-- Spread props --&gt;</span>
+<span class="tag">&lt;Button</span> <span class="fn">{...buttonProps}</span> <span class="tag">/&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="logic">
+        <h2>Template Logic</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>logic.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">&lt;!-- if / else if / else --&gt;</span>
+{#if status === <span class="str">'loading'</span>}
+  <span class="tag">&lt;Spinner</span> <span class="tag">/&gt;</span>
+{:else if status === <span class="str">'error'</span>}
+  <span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="str">"error"</span><span class="tag">&gt;</span>Something went wrong<span class="tag">&lt;/p&gt;</span>
+{:else}
+  <span class="tag">&lt;Content</span> <span class="tag">/&gt;</span>
+{/if}
+
+<span class="cm">&lt;!-- each — iterate arrays --&gt;</span>
+{#each items as item (item.id)}
+  <span class="tag">&lt;div&gt;</span><span class="fn">{item.name}</span><span class="tag">&lt;/div&gt;</span>
+{:else}
+  <span class="tag">&lt;p&gt;</span>No items<span class="tag">&lt;/p&gt;</span>
+{/each}
+
+<span class="cm">&lt;!-- each with index --&gt;</span>
+{#each items as item, i (item.id)}
+  <span class="tag">&lt;p&gt;</span><span class="fn">{i + 1}</span>. <span class="fn">{item.name}</span><span class="tag">&lt;/p&gt;</span>
+{/each}
+
+<span class="cm">&lt;!-- await — handle promises directly in markup --&gt;</span>
+{#await fetchUser(id)}
+  <span class="tag">&lt;p&gt;</span>Loading…<span class="tag">&lt;/p&gt;</span>
+{:then user}
+  <span class="tag">&lt;p&gt;</span><span class="fn">{user.name}</span><span class="tag">&lt;/p&gt;</span>
+{:catch error}
+  <span class="tag">&lt;p&gt;</span>Error: <span class="fn">{error.message}</span><span class="tag">&lt;/p&gt;</span>
+{/await}
+
+<span class="cm">&lt;!-- key block — force remount when key changes --&gt;</span>
+{#key userId}
+  <span class="tag">&lt;Profile</span> <span class="attr">id</span>=<span class="fn">{userId}</span> <span class="tag">/&gt;</span>
+{/key}</code></pre>
+        </div>
+      </section>
+
+      <section id="events">
+        <h2>Events</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>events.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="kw">import</span> { createEventDispatcher } <span class="kw">from</span> <span class="str">'svelte'</span>;
+  <span class="kw">const</span> dispatch = <span class="fn">createEventDispatcher</span>();
+
+  <span class="kw">function</span> <span class="fn">handleSelect</span>(item) {
+    <span class="cm">// Dispatch custom event to parent</span>
+    <span class="fn">dispatch</span>(<span class="str">'select'</span>, { item });
+  }
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- DOM events --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">on:click</span>=<span class="fn">{handleClick}</span><span class="tag">&gt;</span>Click<span class="tag">&lt;/button&gt;</span>
+
+<span class="cm">&lt;!-- Inline handler --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">on:click</span>=<span class="fn">{() =&gt; count++}</span><span class="tag">&gt;</span>+<span class="tag">&lt;/button&gt;</span>
+
+<span class="cm">&lt;!-- Event modifiers --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">on:click|once</span>=<span class="fn">{fn}</span><span class="tag">&gt;</span>Once<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;form</span>   <span class="attr">on:submit|preventDefault</span>=<span class="fn">{submit}</span><span class="tag">&gt;</span>...<span class="tag">&lt;/form&gt;</span>
+<span class="tag">&lt;div</span>    <span class="attr">on:click|stopPropagation</span>=<span class="fn">{fn}</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+<span class="cm">&lt;!-- Other modifiers: passive, capture, self, trusted --&gt;</span>
+
+<span class="cm">&lt;!-- Event forwarding (pass DOM event to parent) --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">on:click</span><span class="tag">&gt;</span>Forward click<span class="tag">&lt;/button&gt;</span>
+
+<span class="cm">&lt;!-- In parent: listen to custom component event --&gt;</span>
+<span class="tag">&lt;MyList</span> <span class="attr">on:select</span>=<span class="fn">{(e) =&gt; selected = e.detail.item}</span> <span class="tag">/&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="bindings">
+        <h2>Bindings</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bindings.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="kw">let</span> name      = <span class="str">''</span>;
+  <span class="kw">let</span> age       = <span class="num">0</span>;
+  <span class="kw">let</span> agreed    = <span class="kw">false</span>;
+  <span class="kw">let</span> color     = <span class="str">'#ff3e00'</span>;
+  <span class="kw">let</span> selected  = <span class="str">'option1'</span>;
+  <span class="kw">let</span> tags      = [];          <span class="cm">// multiple checkboxes</span>
+  <span class="kw">let</span> element;                 <span class="cm">// DOM ref</span>
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- Text input --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">bind:value</span>=<span class="fn">{name}</span> <span class="tag">/&gt;</span>
+
+<span class="cm">&lt;!-- Number input --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"number"</span> <span class="attr">bind:value</span>=<span class="fn">{age}</span> <span class="tag">/&gt;</span>
+
+<span class="cm">&lt;!-- Checkbox --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"checkbox"</span> <span class="attr">bind:checked</span>=<span class="fn">{agreed}</span> <span class="tag">/&gt;</span>
+
+<span class="cm">&lt;!-- Select --&gt;</span>
+<span class="tag">&lt;select</span> <span class="attr">bind:value</span>=<span class="fn">{selected}</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="str">"option1"</span><span class="tag">&gt;</span>Option 1<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="str">"option2"</span><span class="tag">&gt;</span>Option 2<span class="tag">&lt;/option&gt;</span>
+<span class="tag">&lt;/select&gt;</span>
+
+<span class="cm">&lt;!-- DOM reference --&gt;</span>
+<span class="tag">&lt;canvas</span> <span class="attr">bind:this</span>=<span class="fn">{element}</span><span class="tag">&gt;&lt;/canvas&gt;</span>
+
+<span class="cm">&lt;!-- Bind component props (two-way) --&gt;</span>
+<span class="tag">&lt;TextInput</span> <span class="attr">bind:value</span>=<span class="fn">{name}</span> <span class="tag">/&gt;</span>
+
+<span class="cm">&lt;!-- Dimension bindings --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">bind:clientWidth</span>=<span class="fn">{width}</span> <span class="attr">bind:clientHeight</span>=<span class="fn">{height}</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="lifecycle">
+        <h2>Lifecycle</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>lifecycle.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="kw">import</span> {
+    onMount,
+    onDestroy,
+    beforeUpdate,
+    afterUpdate,
+    tick
+  } <span class="kw">from</span> <span class="str">'svelte'</span>;
+
+  <span class="cm">// onMount — runs after first render (client only)</span>
+  <span class="fn">onMount</span>(<span class="kw">async</span> () =&gt; {
+    <span class="kw">const</span> data = <span class="kw">await</span> <span class="fn">fetchData</span>();
+    <span class="cm">// Return a cleanup function</span>
+    <span class="kw">return</span> () =&gt; <span class="fn">cleanup</span>();
+  });
+
+  <span class="cm">// onDestroy — runs when component is removed</span>
+  <span class="fn">onDestroy</span>(() =&gt; {
+    <span class="fn">clearInterval</span>(timer);
+  });
+
+  <span class="cm">// beforeUpdate / afterUpdate — before/after DOM updates</span>
+  <span class="fn">beforeUpdate</span>(() =&gt; { <span class="cm">/* capture scroll position */</span> });
+  <span class="fn">afterUpdate</span>(() =&gt;  { <span class="cm">/* restore scroll position */</span> });
+
+  <span class="cm">// tick — wait for pending DOM updates</span>
+  <span class="kw">async function</span> <span class="fn">handleInput</span>() {
+    value = <span class="str">'new'</span>;
+    <span class="kw">await</span> <span class="fn">tick</span>();
+    inputEl.select();  <span class="cm">// now DOM is updated</span>
+  }
+<span class="tag">&lt;/script&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="stores">
+        <h2>Stores</h2>
+        <p>
+          Stores hold shared reactive state outside components. Any component
+          can subscribe.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>stores.js</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> { writable, readable, derived, get } <span class="kw">from</span> <span class="str">'svelte/store'</span>;
+
+<span class="cm">// writable — can be set/updated externally</span>
+<span class="kw">export const</span> count = <span class="fn">writable</span>(<span class="num">0</span>);
+count.<span class="fn">set</span>(<span class="num">10</span>);
+count.<span class="fn">update</span>(n =&gt; n + <span class="num">1</span>);
+<span class="kw">const</span> value = <span class="fn">get</span>(count);   <span class="cm">// read without subscribing</span>
+
+<span class="cm">// readable — external source, no external set</span>
+<span class="kw">export const</span> time = <span class="fn">readable</span>(<span class="kw">new</span> Date(), (set) =&gt; {
+  <span class="kw">const</span> interval = <span class="fn">setInterval</span>(() =&gt; <span class="fn">set</span>(<span class="kw">new</span> Date()), <span class="num">1000</span>);
+  <span class="kw">return</span> () =&gt; <span class="fn">clearInterval</span>(interval);  <span class="cm">// cleanup</span>
+});
+
+<span class="cm">// derived — computed from other stores</span>
+<span class="kw">export const</span> doubled = <span class="fn">derived</span>(count, $count =&gt; $count * <span class="num">2</span>);
+<span class="kw">export const</span> summary = <span class="fn">derived</span>(
+  [count, time],
+  ([$count, $time]) =&gt; <span class="str">`<span class="fn">${$count}</span> at <span class="fn">${$time.toLocaleTimeString()}</span>`</span>
+);</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>Using stores in a component</span
+            ><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="kw">import</span> { count, doubled } <span class="kw">from</span> <span class="str">'./stores.js'</span>;
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- $ prefix auto-subscribes and unsubscribes --&gt;</span>
+<span class="tag">&lt;p&gt;</span>Count: <span class="fn">{$count}</span><span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;p&gt;</span>Doubled: <span class="fn">{$doubled}</span><span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">on:click</span>=<span class="fn">{() =&gt; $count++}</span><span class="tag">&gt;</span>Increment<span class="tag">&lt;/button&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="context">
+        <h2>Context</h2>
+        <p>
+          Context passes data through the component tree without props. Unlike
+          stores, context is per-component-tree.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>context.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Parent.svelte</span>
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">import</span> { setContext } <span class="kw">from</span> <span class="str">'svelte'</span>;
+  <span class="kw">import</span> { writable } <span class="kw">from</span> <span class="str">'svelte/store'</span>;
+
+  <span class="kw">const</span> theme = <span class="fn">writable</span>(<span class="str">'dark'</span>);
+  <span class="fn">setContext</span>(<span class="str">'theme'</span>, theme);
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="cm">// Child.svelte (any depth)</span>
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">import</span> { getContext } <span class="kw">from</span> <span class="str">'svelte'</span>;
+  <span class="kw">const</span> theme = <span class="fn">getContext</span>(<span class="str">'theme'</span>);
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="fn">{$theme}</span><span class="tag">&gt;</span>Themed<span class="tag">&lt;/div&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="slots">
+        <h2>Slots</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>slots.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Card.svelte</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"card"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;header&gt;</span>
+    <span class="tag">&lt;slot</span> <span class="attr">name</span>=<span class="str">"header"</span><span class="tag">&gt;</span>
+      Default header<span class="cm">&lt;!-- fallback --&gt;</span>
+    <span class="tag">&lt;/slot&gt;</span>
+  <span class="tag">&lt;/header&gt;</span>
+  <span class="tag">&lt;main&gt;</span>
+    <span class="tag">&lt;slot</span> <span class="tag">/&gt;</span>  <span class="cm">&lt;!-- default slot --&gt;</span>
+  <span class="tag">&lt;/main&gt;</span>
+  <span class="tag">&lt;footer&gt;</span>
+    <span class="tag">&lt;slot</span> <span class="attr">name</span>=<span class="str">"footer"</span> <span class="tag">/&gt;</span>
+  <span class="tag">&lt;/footer&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">// Usage</span>
+<span class="tag">&lt;Card&gt;</span>
+  <span class="tag">&lt;h2</span> <span class="attr">slot</span>=<span class="str">"header"</span><span class="tag">&gt;</span>My Title<span class="tag">&lt;/h2&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Default slot content<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;button</span> <span class="attr">slot</span>=<span class="str">"footer"</span><span class="tag">&gt;</span>Close<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/Card&gt;</span>
+
+<span class="cm">// Slot props — expose data from child to parent</span>
+<span class="tag">&lt;slot</span> <span class="attr">item</span>=<span class="fn">{item}</span> <span class="attr">index</span>=<span class="fn">{i}</span> <span class="tag">/&gt;</span>
+
+<span class="cm">// In parent:</span>
+<span class="tag">&lt;List</span> <span class="attr">let:item</span> <span class="attr">let:index</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;p&gt;</span><span class="fn">{index}</span>: <span class="fn">{item.name}</span><span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/List&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="transitions">
+        <h2>Transitions &amp; Animations</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>transitions.svelte</span
+            ><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="kw">import</span> { fade, fly, slide, scale, blur } <span class="kw">from</span> <span class="str">'svelte/transition'</span>;
+  <span class="kw">import</span> { flip } <span class="kw">from</span> <span class="str">'svelte/animate'</span>;
+  <span class="kw">import</span> { tweened, spring } <span class="kw">from</span> <span class="str">'svelte/motion'</span>;
+
+  <span class="kw">let</span> visible = <span class="kw">true</span>;
+
+  <span class="cm">// Tweened store — smooth interpolation</span>
+  <span class="kw">const</span> progress = <span class="fn">tweened</span>(<span class="num">0</span>, { duration: <span class="num">400</span> });
+  progress.<span class="fn">set</span>(<span class="num">0.75</span>);   <span class="cm">// animates to 75%</span>
+
+  <span class="cm">// Spring — physics-based motion</span>
+  <span class="kw">const</span> coords = <span class="fn">spring</span>({ x: <span class="num">0</span>, y: <span class="num">0</span> });
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- transition: — both enter and leave --&gt;</span>
+{#if visible}
+  <span class="tag">&lt;p</span> <span class="attr">transition:fade</span><span class="tag">&gt;</span>Fades in and out<span class="tag">&lt;/p&gt;</span>
+{/if}
+
+<span class="cm">&lt;!-- With options --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">transition:fly</span>=<span class="fn">{{ y: 200, duration: 500 }}</span><span class="tag">&gt;</span>Fly in<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- in: / out: separately --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">in:slide</span> <span class="attr">out:scale</span><span class="tag">&gt;</span>Different in/out<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- animate:flip for list reordering --&gt;</span>
+{#each items as item (item.id)}
+  <span class="tag">&lt;div</span> <span class="attr">animate:flip</span>=<span class="fn">{{ duration: 300 }}</span><span class="tag">&gt;</span><span class="fn">{item.name}</span><span class="tag">&lt;/div&gt;</span>
+{/each}
+
+<span class="cm">&lt;!-- Progress bar --&gt;</span>
+<span class="tag">&lt;progress</span> <span class="attr">value</span>=<span class="fn">{$progress}</span> <span class="tag">/&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="actions">
+        <h2>Actions</h2>
+        <p>
+          Actions are functions that attach behaviour to DOM elements. Reusable
+          and side-effect focused.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>actions.js</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Action = function(node, params) => { update?, destroy? }</span>
+<span class="kw">function</span> <span class="fn">clickOutside</span>(node, handler) {
+  <span class="kw">const</span> <span class="fn">handleClick</span> = (e) =&gt; {
+    <span class="kw">if</span> (!node.<span class="fn">contains</span>(e.target)) <span class="fn">handler</span>();
+  };
+  document.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, handleClick, <span class="kw">true</span>);
+  <span class="kw">return</span> {
+    <span class="fn">destroy</span>() { document.<span class="fn">removeEventListener</span>(<span class="str">'click'</span>, handleClick, <span class="kw">true</span>); }
+  };
+}
+
+<span class="kw">function</span> <span class="fn">tooltip</span>(node, text) {
+  <span class="cm">// ... setup tooltip</span>
+  <span class="kw">return</span> {
+    <span class="fn">update</span>(newText) { <span class="cm">/* text changed */</span> },
+    <span class="fn">destroy</span>() { <span class="cm">/* cleanup */</span> }
+  };
+}
+
+<span class="cm">// Usage in template:</span>
+<span class="cm">// &lt;div use:clickOutside={close}&gt;...&lt;/div&gt;</span>
+<span class="cm">// &lt;button use:tooltip={"Click me"}&gt;...&lt;/button&gt;</span></code></pre>
+        </div>
+      </section>
+
+      <section id="special">
+        <h2>Special Elements</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>special.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">&lt;!-- svelte:self — recursion --&gt;</span>
+{#if item.children}
+  <span class="tag">&lt;svelte:self</span> <span class="attr">items</span>=<span class="fn">{item.children}</span> <span class="tag">/&gt;</span>
+{/if}
+
+<span class="cm">&lt;!-- svelte:component — dynamic component --&gt;</span>
+<span class="tag">&lt;svelte:component</span> <span class="attr">this</span>=<span class="fn">{currentComponent}</span> <span class="fn">{...props}</span> <span class="tag">/&gt;</span>
+
+<span class="cm">&lt;!-- svelte:head — inject into &lt;head&gt; --&gt;</span>
+<span class="tag">&lt;svelte:head&gt;</span>
+  <span class="tag">&lt;title&gt;</span><span class="fn">{title}</span><span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="str">"description"</span> <span class="attr">content</span>=<span class="fn">{description}</span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;/svelte:head&gt;</span>
+
+<span class="cm">&lt;!-- svelte:window — listen to window events --&gt;</span>
+<span class="tag">&lt;svelte:window</span> <span class="attr">on:resize</span>=<span class="fn">{handleResize}</span> <span class="attr">bind:innerWidth</span>=<span class="fn">{width}</span> <span class="tag">/&gt;</span>
+
+<span class="cm">&lt;!-- svelte:body — attach to document.body --&gt;</span>
+<span class="tag">&lt;svelte:body</span> <span class="attr">on:click</span>=<span class="fn">{handleBodyClick}</span> <span class="tag">/&gt;</span>
+
+<span class="cm">&lt;!-- svelte:element — dynamic element tag --&gt;</span>
+<span class="tag">&lt;svelte:element</span> <span class="attr">this</span>=<span class="fn">{tag}</span><span class="tag">&gt;</span>Content<span class="tag">&lt;/svelte:element&gt;</span>
+
+<span class="cm">&lt;!-- {@html} — raw HTML (careful: XSS risk) --&gt;</span>
+{@html sanitizedContent}
+
+<span class="cm">&lt;!-- {@debug} — log variables in dev --&gt;</span>
+{@debug user, count}</code></pre>
+        </div>
+      </section>
+
+      <section id="sveltekit">
+        <h2>SvelteKit</h2>
+        <p>
+          SvelteKit is the full-stack framework built on Svelte. It provides
+          file-based routing, SSR, SSG, and API routes.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>SvelteKit structure</span
+            ><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// src/routes/</span>
+<span class="cm">//   +page.svelte            → route page component</span>
+<span class="cm">//   +page.server.js         → server-side data loading</span>
+<span class="cm">//   +layout.svelte          → shared layout</span>
+<span class="cm">//   +layout.server.js       → layout data</span>
+<span class="cm">//   +error.svelte           → error page</span>
+<span class="cm">//   blog/[slug]/+page.svelte → dynamic route</span>
+<span class="cm">//   api/users/+server.js    → API endpoint</span></code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>+page.server.js — load data</span
+            ><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm">// Runs on the server, data is available to the page</span>
+<span class="kw">export async function</span> <span class="fn">load</span>({ params, fetch, cookies }) {
+  <span class="kw">const</span> post = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`/api/posts/<span class="fn">${params.slug}</span>`</span>)
+    .<span class="fn">then</span>(r =&gt; r.<span class="fn">json</span>());
+
+  <span class="kw">if</span> (!post) {
+    <span class="kw">throw</span> <span class="fn">error</span>(<span class="num">404</span>, <span class="str">'Post not found'</span>);
+  }
+
+  <span class="kw">return</span> { post };
+}</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>+page.svelte</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="tag">&lt;script&gt;</span>
+  <span class="cm">// data comes from the load function above</span>
+  <span class="kw">export let</span> data;
+<span class="tag">&lt;/script&gt;</span>
+
+<span class="tag">&lt;h1&gt;</span><span class="fn">{data.post.title}</span><span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;p&gt;</span><span class="fn">{data.post.content}</span><span class="tag">&lt;/p&gt;</span></code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>+server.js — API route</span
+            ><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> { json } <span class="kw">from</span> <span class="str">'@sveltejs/kit'</span>;
+
+<span class="kw">export async function</span> <span class="fn">GET</span>({ params }) {
+  <span class="kw">const</span> user = <span class="kw">await</span> db.<span class="fn">find</span>(params.id);
+  <span class="kw">return</span> <span class="fn">json</span>(user);
+}
+
+<span class="kw">export async function</span> <span class="fn">POST</span>({ request }) {
+  <span class="kw">const</span> body = <span class="kw">await</span> request.<span class="fn">json</span>();
+  <span class="kw">const</span> user = <span class="kw">await</span> db.<span class="fn">create</span>(body);
+  <span class="kw">return</span> <span class="fn">json</span>(user, { status: <span class="num">201</span> });
+}</code></pre>
+        </div>
+      </section>
+
+      <footer>
+        <p>← <a href="index.html">Back to Home</a></p>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

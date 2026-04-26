@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-topic="git">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn Git — Core Concepts</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+  </head>
+  <body class="app">
+    <div id="progress-bar"></div>
+    <div id="overlay"></div>
+
+    <header id="topbar">
+      <button id="menu-toggle">&#9776;</button>
+      <a href="index.html" class="topbar-brand"
+        ><span class="brand-icon">💻</span> Learn Programming</a
+      >
+      <nav class="topic-pills">
+        <a href="python.html" class="topic-pill">🐍 Python</a>
+        <a href="sql.html" class="topic-pill">🗄️ SQL</a>
+        <a href="git.html" class="topic-pill active">⎇ Git</a>
+        <a href="react.html" class="topic-pill">⚛️ React</a>
+        <a href="svelte.html" class="topic-pill">🔥 Svelte</a>
+        <a href="linux.html" class="topic-pill">🐧 Linux</a>
+      </nav>
+      <button id="theme-toggle">☀️</button>
+    </header>
+
+    <nav id="sidebar">
+      <div class="sidebar-header">⎇ Git</div>
+      <ul class="nav-list">
+        <li><a href="#intro" class="nav-link active">Introduction</a></li>
+        <li><a href="#setup" class="nav-link">Setup &amp; Config</a></li>
+        <li><a href="#init" class="nav-link">Init &amp; Clone</a></li>
+        <li>
+          <a href="#staging" class="nav-link">Staging &amp; Committing</a>
+        </li>
+        <li><a href="#branching" class="nav-link">Branching</a></li>
+        <li><a href="#merging" class="nav-link">Merging</a></li>
+        <li><a href="#rebase" class="nav-link">Rebase</a></li>
+        <li><a href="#remote" class="nav-link">Remote Repos</a></li>
+        <li><a href="#stash" class="nav-link">Stash</a></li>
+        <li><a href="#log" class="nav-link">Log &amp; Diff</a></li>
+        <li><a href="#undo" class="nav-link">Undoing Changes</a></li>
+        <li><a href="#tags" class="nav-link">Tags</a></li>
+        <li><a href="#gitignore" class="nav-link">.gitignore</a></li>
+        <li><a href="#cherry" class="nav-link">Cherry-pick</a></li>
+        <li><a href="#workflows" class="nav-link">Workflows</a></li>
+        <li><a href="#advanced" class="nav-link">Advanced</a></li>
+      </ul>
+    </nav>
+
+    <main id="content">
+      <section id="intro">
+        <h1>Git</h1>
+        <p class="topic-intro">
+          A distributed version control system that tracks changes, enables
+          collaboration, and lets you roll back to any point in history.
+        </p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Distributed</h3>
+            <p>Every clone is a full repository with complete history.</p>
+          </div>
+          <div class="info-card">
+            <h3>Snapshots</h3>
+            <p>Git stores file snapshots, not diffs. Fast and efficient.</p>
+          </div>
+          <div class="info-card">
+            <h3>Branching</h3>
+            <p>Branches are cheap pointers to commits — create freely.</p>
+          </div>
+          <div class="info-card">
+            <h3>SHA-1 integrity</h3>
+            <p>Every object is identified by a content hash.</p>
+          </div>
+        </div>
+        <div class="callout">
+          <strong>Three areas:</strong> Working directory (your files) → Staging
+          area (index, what's in the next commit) → Repository (.git/objects,
+          the history).
+        </div>
+      </section>
+
+      <section id="setup">
+        <h2>Setup &amp; Config</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Identity (required before first commit)</span>
+git config --global user.name  <span class="str">"Alice Smith"</span>
+git config --global user.email <span class="str">"alice@example.com"</span>
+
+<span class="cm"># Default branch name</span>
+git config --global init.defaultBranch main
+
+<span class="cm"># Editor for commit messages</span>
+git config --global core.editor <span class="str">"code --wait"</span>
+
+<span class="cm"># Aliases</span>
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.lg <span class="str">"log --oneline --graph --decorate --all"</span>
+
+<span class="cm"># Scope: --global (user), --local (repo), --system (machine)</span>
+git config --list                <span class="cm"># show all settings</span></code></pre>
+        </div>
+      </section>
+
+      <section id="init">
+        <h2>Init &amp; Clone</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Start new repository</span>
+git init                         <span class="cm"># in current directory</span>
+git init my-project              <span class="cm"># in new directory</span>
+
+<span class="cm"># Clone existing repository</span>
+git clone https://github.com/user/repo.git
+git clone https://github.com/user/repo.git my-folder
+git clone --depth 1 https://...   <span class="cm"># shallow clone (only latest)</span>
+git clone --branch develop https://...</code></pre>
+        </div>
+      </section>
+
+      <section id="staging">
+        <h2>Staging &amp; Committing</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Check status</span>
+git status
+git status -s                    <span class="cm"># short format</span>
+
+<span class="cm"># Stage files</span>
+git add file.txt                 <span class="cm"># specific file</span>
+git add src/                     <span class="cm"># directory</span>
+git add .                        <span class="cm"># all changes in cwd</span>
+git add -p                       <span class="cm"># interactive: stage hunks</span>
+
+<span class="cm"># Unstage (without losing changes)</span>
+git restore --staged file.txt
+git reset HEAD file.txt          <span class="cm"># older syntax</span>
+
+<span class="cm"># Commit</span>
+git commit -m <span class="str">"feat: add login page"</span>
+git commit                       <span class="cm"># opens editor</span>
+git commit -am <span class="str">"fix: typo"</span>       <span class="cm"># stage tracked + commit</span>
+
+<span class="cm"># Amend last commit (before pushing!)</span>
+git commit --amend -m <span class="str">"corrected message"</span>
+git commit --amend --no-edit     <span class="cm"># keep message, add staged files</span></code></pre>
+        </div>
+      </section>
+
+      <section id="branching">
+        <h2>Branching</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># List branches</span>
+git branch                       <span class="cm"># local</span>
+git branch -a                    <span class="cm"># all (including remote)</span>
+git branch -v                    <span class="cm"># with last commit</span>
+
+<span class="cm"># Create branch</span>
+git branch feature/login
+git checkout -b feature/login    <span class="cm"># create + switch</span>
+git switch -c feature/login      <span class="cm"># modern syntax</span>
+
+<span class="cm"># Switch branch</span>
+git checkout main
+git switch main                  <span class="cm"># modern syntax</span>
+
+<span class="cm"># Rename branch</span>
+git branch -m old-name new-name
+git branch -m new-name           <span class="cm"># rename current</span>
+
+<span class="cm"># Delete branch</span>
+git branch -d feature/login      <span class="cm"># safe (merged only)</span>
+git branch -D feature/login      <span class="cm"># force delete</span>
+
+<span class="cm"># Create branch from specific commit</span>
+git checkout -b hotfix/bug abc1234</code></pre>
+        </div>
+      </section>
+
+      <section id="merging">
+        <h2>Merging</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Merge feature branch into main</span>
+git switch main
+git merge feature/login
+
+<span class="cm"># No-fast-forward — always creates merge commit</span>
+git merge --no-ff feature/login
+
+<span class="cm"># Squash merge — squashes all commits into one staged change</span>
+git merge --squash feature/login
+git commit -m <span class="str">"feat: login page"</span>
+
+<span class="cm"># Resolve conflicts:</span>
+<span class="cm">#  1. Open conflicted files — look for &lt;&lt;&lt;&lt;, ====, &gt;&gt;&gt;&gt;</span>
+<span class="cm">#  2. Edit to desired state</span>
+<span class="cm">#  3. git add &lt;resolved-file&gt;</span>
+<span class="cm">#  4. git commit</span>
+
+<span class="cm"># Abort merge</span>
+git merge --abort
+
+<span class="cm"># Check for merge conflicts before merging</span>
+git merge --no-commit --no-ff feature/login</code></pre>
+        </div>
+      </section>
+
+      <section id="rebase">
+        <h2>Rebase</h2>
+        <div class="callout">
+          <strong>Golden rule:</strong> Never rebase commits that have been
+          pushed to a shared remote branch. Rebase rewrites history.
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Rebase current branch onto main</span>
+git switch feature/login
+git rebase main
+
+<span class="cm"># Interactive rebase — edit, squash, reorder commits</span>
+git rebase -i HEAD~3             <span class="cm"># last 3 commits</span>
+git rebase -i main               <span class="cm"># all commits since branching off main</span>
+
+<span class="cm"># Interactive options:</span>
+<span class="cm">#  pick  p  — use commit as-is</span>
+<span class="cm">#  reword r  — change commit message</span>
+<span class="cm">#  edit  e  — pause to amend commit</span>
+<span class="cm">#  squash s  — combine with previous commit</span>
+<span class="cm">#  fixup f  — squash, discard this commit's message</span>
+<span class="cm">#  drop  d  — remove commit</span>
+
+<span class="cm"># Continue / abort rebase</span>
+git rebase --continue
+git rebase --abort
+
+<span class="cm"># Pull with rebase (cleaner history)</span>
+git pull --rebase origin main</code></pre>
+        </div>
+      </section>
+
+      <section id="remote">
+        <h2>Remote Repositories</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Manage remotes</span>
+git remote -v                              <span class="cm"># list remotes</span>
+git remote add origin https://github.com/user/repo.git
+git remote rename origin upstream
+git remote remove upstream
+
+<span class="cm"># Fetch — download without merging</span>
+git fetch origin                           <span class="cm"># all branches</span>
+git fetch origin main                      <span class="cm"># specific branch</span>
+
+<span class="cm"># Pull = fetch + merge (or rebase)</span>
+git pull origin main
+git pull --rebase origin main
+
+<span class="cm"># Push</span>
+git push origin main
+git push -u origin feature/login           <span class="cm"># set upstream tracking</span>
+git push                                   <span class="cm"># after -u, shorthand</span>
+git push --force-with-lease                <span class="cm"># safer force push</span>
+
+<span class="cm"># Delete remote branch</span>
+git push origin --delete feature/login
+
+<span class="cm"># Track remote branch</span>
+git branch --set-upstream-to=origin/main main</code></pre>
+        </div>
+      </section>
+
+      <section id="stash">
+        <h2>Stash</h2>
+        <p>Save uncommitted changes temporarily without committing them.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Stash current changes</span>
+git stash
+git stash push -m <span class="str">"WIP: half-done feature"</span>
+git stash push -u                          <span class="cm"># include untracked files</span>
+
+<span class="cm"># List stashes</span>
+git stash list
+
+<span class="cm"># Apply stash</span>
+git stash pop                              <span class="cm"># apply + remove from stash</span>
+git stash apply stash@{2}                 <span class="cm"># apply specific, keep in stash</span>
+
+<span class="cm"># View stash contents</span>
+git stash show -p stash@{0}
+
+<span class="cm"># Drop / clear stashes</span>
+git stash drop stash@{0}
+git stash clear                            <span class="cm"># remove all stashes</span>
+
+<span class="cm"># Create branch from stash</span>
+git stash branch feature/new stash@{0}</code></pre>
+        </div>
+      </section>
+
+      <section id="log">
+        <h2>Log &amp; Diff</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Log</span>
+git log
+git log --oneline                          <span class="cm"># compact</span>
+git log --oneline --graph --decorate --all <span class="cm"># visual tree</span>
+git log --author=<span class="str">"Alice"</span>
+git log --since=<span class="str">"2024-01-01"</span> --until=<span class="str">"2024-12-31"</span>
+git log -p                                 <span class="cm"># show patch/diff</span>
+git log --stat                             <span class="cm"># files changed</span>
+git log -- path/to/file                    <span class="cm"># history of a file</span>
+
+<span class="cm"># Diff</span>
+git diff                                   <span class="cm"># working vs staged</span>
+git diff --staged                          <span class="cm"># staged vs last commit</span>
+git diff main..feature/login               <span class="cm"># between branches</span>
+git diff abc1234..def5678                  <span class="cm"># between commits</span>
+git diff HEAD~3                            <span class="cm"># vs 3 commits ago</span>
+
+<span class="cm"># Show a commit</span>
+git show abc1234
+git show HEAD:path/to/file                 <span class="cm"># file at a commit</span>
+
+<span class="cm"># Who changed a line?</span>
+git blame path/to/file</code></pre>
+        </div>
+      </section>
+
+      <section id="undo">
+        <h2>Undoing Changes</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Command</th>
+                <th>Effect</th>
+                <th>Safe?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>git restore file</td>
+                <td>Discard working dir changes</td>
+                <td>⚠️ Destructive</td>
+              </tr>
+              <tr>
+                <td>git restore --staged file</td>
+                <td>Unstage file</td>
+                <td>✅ Safe</td>
+              </tr>
+              <tr>
+                <td>git revert &lt;commit&gt;</td>
+                <td>New commit that undoes a commit</td>
+                <td>✅ Safe</td>
+              </tr>
+              <tr>
+                <td>git reset --soft HEAD~1</td>
+                <td>Undo commit, keep staged</td>
+                <td>✅ Local only</td>
+              </tr>
+              <tr>
+                <td>git reset --mixed HEAD~1</td>
+                <td>Undo commit, keep working dir</td>
+                <td>✅ Local only</td>
+              </tr>
+              <tr>
+                <td>git reset --hard HEAD~1</td>
+                <td>Undo commit, discard all changes</td>
+                <td>⚠️ Destructive</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Discard working directory changes</span>
+git restore file.txt                       <span class="cm"># single file</span>
+git restore .                              <span class="cm"># all files</span>
+
+<span class="cm"># Revert (adds new commit undoing the old one — safe for shared history)</span>
+git revert HEAD                            <span class="cm"># undo last commit</span>
+git revert abc1234                         <span class="cm"># undo specific commit</span>
+
+<span class="cm"># Reset (rewrites history — use locally only)</span>
+git reset --soft HEAD~1   <span class="cm"># undo commit, staged changes preserved</span>
+git reset --mixed HEAD~1  <span class="cm"># undo commit, changes in working dir</span>
+git reset --hard HEAD~1   <span class="cm"># undo commit, all changes gone</span>
+
+<span class="cm"># Recover a dropped commit via reflog</span>
+git reflog
+git checkout -b recover abc1234</code></pre>
+        </div>
+      </section>
+
+      <section id="tags">
+        <h2>Tags</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Annotated tag (preferred — includes message + author)</span>
+git tag -a v1.0.0 -m <span class="str">"Release v1.0.0"</span>
+
+<span class="cm"># Lightweight tag</span>
+git tag v1.0.0-rc1
+
+<span class="cm"># Tag a specific commit</span>
+git tag -a v0.9.0 abc1234 -m <span class="str">"Beta release"</span>
+
+<span class="cm"># List &amp; show</span>
+git tag
+git tag -l <span class="str">"v1.*"</span>
+git show v1.0.0
+
+<span class="cm"># Push tags</span>
+git push origin v1.0.0                    <span class="cm"># one tag</span>
+git push origin --tags                    <span class="cm"># all tags</span>
+
+<span class="cm"># Delete tag</span>
+git tag -d v1.0.0                         <span class="cm"># local</span>
+git push origin --delete v1.0.0           <span class="cm"># remote</span></code></pre>
+        </div>
+      </section>
+
+      <section id="gitignore">
+        <h2>.gitignore</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>.gitignore</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Ignore build artifacts</span>
+dist/
+build/
+*.o
+*.pyc
+
+<span class="cm"># Ignore secrets &amp; config</span>
+.env
+.env.local
+config/secrets.yml
+
+<span class="cm"># Ignore deps</span>
+node_modules/
+__pycache__/
+.venv/
+
+<span class="cm"># Ignore OS files</span>
+.DS_Store
+Thumbs.db
+
+<span class="cm"># Ignore IDE files</span>
+.idea/
+.vscode/
+*.swp
+
+<span class="cm"># Negate — un-ignore a specific file</span>
+!important.log
+
+<span class="cm"># Match anywhere in tree</span>
+**/temp/
+
+<span class="cm"># Single-level wildcard</span>
+*.log</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Remove already-tracked file from git (keep on disk)</span>
+git rm --cached .env
+git rm --cached -r node_modules/
+
+<span class="cm"># Global gitignore (applies to all repos)</span>
+git config --global core.excludesFile ~/.gitignore_global</code></pre>
+        </div>
+      </section>
+
+      <section id="cherry">
+        <h2>Cherry-pick</h2>
+        <p>Apply the changes from a specific commit to the current branch.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Apply a single commit</span>
+git cherry-pick abc1234
+
+<span class="cm"># Apply a range of commits</span>
+git cherry-pick abc1234..def5678
+
+<span class="cm"># Cherry-pick without committing</span>
+git cherry-pick --no-commit abc1234
+
+<span class="cm"># Handle conflicts then continue</span>
+git cherry-pick --continue
+git cherry-pick --abort</code></pre>
+        </div>
+      </section>
+
+      <section id="workflows">
+        <h2>Workflows</h2>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="wf-feature" data-group="wf">
+            Feature Branch
+          </button>
+          <button class="tab-btn" data-tab="wf-gitflow" data-group="wf">
+            Git Flow
+          </button>
+          <button class="tab-btn" data-tab="wf-trunk" data-group="wf">
+            Trunk-based
+          </button>
+        </div>
+        <div id="tab-wf-feature" class="tab-content active" data-group="wf">
+          <div class="code-block">
+            <div class="code-header">
+              <span>feature-branch.sh</span
+              ><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="cm"># 1. Always start from up-to-date main</span>
+git switch main
+git pull origin main
+
+<span class="cm"># 2. Create feature branch</span>
+git switch -c feature/user-auth
+
+<span class="cm"># 3. Work, commit often</span>
+git add -p
+git commit -m <span class="str">"feat: add JWT validation"</span>
+
+<span class="cm"># 4. Keep up to date with main</span>
+git fetch origin
+git rebase origin/main
+
+<span class="cm"># 5. Push &amp; open pull request</span>
+git push -u origin feature/user-auth
+
+<span class="cm"># 6. After PR merged, clean up</span>
+git switch main
+git pull origin main
+git branch -d feature/user-auth</code></pre>
+          </div>
+        </div>
+        <div id="tab-wf-gitflow" class="tab-content" data-group="wf">
+          <div class="code-block">
+            <div class="code-header">
+              <span>gitflow.sh</span><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="cm"># Branches:</span>
+<span class="cm">#  main     — production releases, tagged</span>
+<span class="cm">#  develop  — integration branch</span>
+<span class="cm">#  feature/* — new features</span>
+<span class="cm">#  release/* — release prep</span>
+<span class="cm">#  hotfix/*  — emergency production fixes</span>
+
+<span class="cm"># New feature</span>
+git switch -c feature/payments develop
+
+<span class="cm"># Finish feature</span>
+git switch develop
+git merge --no-ff feature/payments
+git branch -d feature/payments
+
+<span class="cm"># Hotfix on production</span>
+git switch -c hotfix/1.0.1 main
+git commit -m <span class="str">"fix: critical security patch"</span>
+git switch main  &amp;&amp; git merge --no-ff hotfix/1.0.1
+git tag v1.0.1
+git switch develop &amp;&amp; git merge --no-ff hotfix/1.0.1</code></pre>
+          </div>
+        </div>
+        <div id="tab-wf-trunk" class="tab-content" data-group="wf">
+          <div class="code-block">
+            <div class="code-header">
+              <span>trunk-based.sh</span><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="cm"># Trunk-based: everyone commits to main frequently</span>
+<span class="cm"># Feature flags hide incomplete work</span>
+<span class="cm"># Short-lived branches (&lt; 2 days)</span>
+
+git switch main
+git pull --rebase origin main
+
+<span class="cm"># Very short-lived feature branch</span>
+git switch -c fix/typo-in-header
+git commit -m <span class="str">"fix: correct heading text"</span>
+git push origin fix/typo-in-header
+
+<span class="cm"># Merge same day via PR or direct push</span>
+git switch main
+git merge fix/typo-in-header
+git push origin main</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="advanced">
+        <h2>Advanced</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>bash</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># bisect — binary search for bad commit</span>
+git bisect start
+git bisect bad                             <span class="cm"># current is bad</span>
+git bisect good v1.0.0                    <span class="cm"># this was good</span>
+<span class="cm"># Git checks out midpoints — mark each good/bad</span>
+git bisect good / git bisect bad
+git bisect reset                           <span class="cm"># done</span>
+
+<span class="cm"># worktree — multiple branches checked out simultaneously</span>
+git worktree add ../hotfix hotfix/critical-bug
+
+<span class="cm"># submodule — embed another repo</span>
+git submodule add https://github.com/user/lib.git lib
+git submodule update --init --recursive
+
+<span class="cm"># sparse checkout — only fetch subset of files</span>
+git sparse-checkout set src/ docs/
+
+<span class="cm"># clean — remove untracked files</span>
+git clean -n                               <span class="cm"># dry run</span>
+git clean -fd                              <span class="cm"># force delete files + dirs
+
+# hooks — scripts that run on git events
+# .git/hooks/pre-commit, commit-msg, pre-push, etc.</span></code></pre>
+        </div>
+      </section>
+
+      <footer>
+        <p>← <a href="index.html">Back to Home</a></p>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

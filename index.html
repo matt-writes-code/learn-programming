@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-topic="home">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn Programming — Home</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+  </head>
+  <body class="home-body">
+    <nav class="home-nav">
+      <a href="index.html" class="home-brand">
+        <span>💻</span> Learn Programming
+      </a>
+      <button id="theme-toggle" aria-label="Toggle theme">☀️</button>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-badge">🚀 6 technologies · 100+ concepts</div>
+      <h1>Learn Programming</h1>
+      <p>
+        A comprehensive reference covering Python, SQL, Git, React, Svelte, and
+        Linux — all the core concepts, syntax, and patterns in one place.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">6</div>
+          <div class="stat-lbl">Technologies</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">90+</div>
+          <div class="stat-lbl">Sections</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">200+</div>
+          <div class="stat-lbl">Code Examples</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="topics-grid">
+      <a href="python.html" class="topic-card" style="--card-color: #3b82f6">
+        <div class="card-icon">🐍</div>
+        <div class="card-title">Python</div>
+        <div class="card-desc">
+          A versatile, readable language used in data science, web backends,
+          automation, and AI. Perfect as a first language.
+        </div>
+        <div class="card-tags">
+          <span class="card-tag">variables</span>
+          <span class="card-tag">functions</span>
+          <span class="card-tag">OOP</span>
+          <span class="card-tag">decorators</span>
+          <span class="card-tag">generators</span>
+          <span class="card-tag">typing</span>
+        </div>
+        <div class="card-cta">Start learning Python</div>
+      </a>
+
+      <a href="sql.html" class="topic-card" style="--card-color: #f97316">
+        <div class="card-icon">🗄️</div>
+        <div class="card-title">SQL</div>
+        <div class="card-desc">
+          The universal language for working with relational databases.
+          Essential for backend, data engineering, and analytics.
+        </div>
+        <div class="card-tags">
+          <span class="card-tag">SELECT</span>
+          <span class="card-tag">JOINs</span>
+          <span class="card-tag">aggregations</span>
+          <span class="card-tag">CTEs</span>
+          <span class="card-tag">window functions</span>
+          <span class="card-tag">indexes</span>
+        </div>
+        <div class="card-cta">Start learning SQL</div>
+      </a>
+
+      <a href="git.html" class="topic-card" style="--card-color: #f43f5e">
+        <div class="card-icon">⎇</div>
+        <div class="card-title">Git</div>
+        <div class="card-desc">
+          The industry-standard version control system. Learn to track changes,
+          collaborate, branch, and recover from mistakes.
+        </div>
+        <div class="card-tags">
+          <span class="card-tag">commits</span>
+          <span class="card-tag">branching</span>
+          <span class="card-tag">merging</span>
+          <span class="card-tag">rebase</span>
+          <span class="card-tag">remote</span>
+          <span class="card-tag">workflows</span>
+        </div>
+        <div class="card-cta">Start learning Git</div>
+      </a>
+
+      <a href="react.html" class="topic-card" style="--card-color: #06b6d4">
+        <div class="card-icon">⚛️</div>
+        <div class="card-title">React</div>
+        <div class="card-desc">
+          The world's most popular UI library. Build fast, component-driven
+          interfaces with hooks, context, and the virtual DOM.
+        </div>
+        <div class="card-tags">
+          <span class="card-tag">JSX</span>
+          <span class="card-tag">hooks</span>
+          <span class="card-tag">state</span>
+          <span class="card-tag">context</span>
+          <span class="card-tag">custom hooks</span>
+          <span class="card-tag">performance</span>
+        </div>
+        <div class="card-cta">Start learning React</div>
+      </a>
+
+      <a href="svelte.html" class="topic-card" style="--card-color: #ff3e00">
+        <div class="card-icon">🔥</div>
+        <div class="card-title">Svelte</div>
+        <div class="card-desc">
+          A radical new approach to building UIs — a compile-step framework with
+          no virtual DOM, minimal boilerplate, and blazing speed.
+        </div>
+        <div class="card-tags">
+          <span class="card-tag">reactivity</span>
+          <span class="card-tag">stores</span>
+          <span class="card-tag">bindings</span>
+          <span class="card-tag">transitions</span>
+          <span class="card-tag">SvelteKit</span>
+          <span class="card-tag">actions</span>
+        </div>
+        <div class="card-cta">Start learning Svelte</div>
+      </a>
+
+      <a href="linux.html" class="topic-card" style="--card-color: #a3e635">
+        <div class="card-icon">🐧</div>
+        <div class="card-title">Linux</div>
+        <div class="card-desc">
+          The OS powering most servers, cloud infrastructure, and developer
+          machines. Master the shell and you master the machine.
+        </div>
+        <div class="card-tags">
+          <span class="card-tag">shell</span>
+          <span class="card-tag">filesystem</span>
+          <span class="card-tag">permissions</span>
+          <span class="card-tag">processes</span>
+          <span class="card-tag">scripting</span>
+          <span class="card-tag">networking</span>
+        </div>
+        <div class="card-cta">Start learning Linux</div>
+      </a>
+    </div>
+
+    <footer>
+      <p>Built by Matt</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

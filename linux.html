@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-topic="linux">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn Linux — Core Concepts</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+  </head>
+  <body class="app">
+    <div id="progress-bar"></div>
+    <div id="overlay"></div>
+
+    <header id="topbar">
+      <button id="menu-toggle">&#9776;</button>
+      <a href="index.html" class="topbar-brand"
+        ><span class="brand-icon">💻</span> Learn Programming</a
+      >
+      <nav class="topic-pills">
+        <a href="python.html" class="topic-pill">🐍 Python</a>
+        <a href="sql.html" class="topic-pill">🗄️ SQL</a>
+        <a href="git.html" class="topic-pill">⎇ Git</a>
+        <a href="react.html" class="topic-pill">⚛️ React</a>
+        <a href="svelte.html" class="topic-pill">🔥 Svelte</a>
+        <a href="linux.html" class="topic-pill active">🐧 Linux</a>
+      </nav>
+      <button id="theme-toggle">☀️</button>
+    </header>
+
+    <nav id="sidebar">
+      <div class="sidebar-header">🐧 Linux</div>
+      <ul class="nav-list">
+        <li><a href="#intro" class="nav-link active">Introduction</a></li>
+        <li><a href="#filesystem" class="nav-link">File System</a></li>
+        <li><a href="#navigation" class="nav-link">Navigation</a></li>
+        <li><a href="#files" class="nav-link">File Operations</a></li>
+        <li><a href="#content" class="nav-link">File Content</a></li>
+        <li><a href="#permissions" class="nav-link">Permissions</a></li>
+        <li><a href="#users" class="nav-link">Users &amp; Groups</a></li>
+        <li><a href="#processes" class="nav-link">Processes</a></li>
+        <li><a href="#packages" class="nav-link">Package Management</a></li>
+        <li><a href="#pipes" class="nav-link">Pipes &amp; Redirection</a></li>
+        <li><a href="#text" class="nav-link">Text Processing</a></li>
+        <li><a href="#networking" class="nav-link">Networking</a></li>
+        <li><a href="#env" class="nav-link">Environment &amp; Shell</a></li>
+        <li><a href="#scripting" class="nav-link">Shell Scripting</a></li>
+        <li><a href="#cron" class="nav-link">Cron Jobs</a></li>
+        <li><a href="#vim" class="nav-link">Vim</a></li>
+        <li><a href="#ssh" class="nav-link">SSH</a></li>
+      </ul>
+    </nav>
+
+    <main id="content">
+      <section id="intro">
+        <h1>Linux</h1>
+        <p class="topic-intro">
+          An open-source Unix-like OS kernel powering servers, cloud
+          infrastructure, Android, and most developer machines. Understanding
+          the shell unlocks immense productivity and control.
+        </p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Everything is a file</h3>
+            <p>Devices, pipes, and sockets are all accessed via file paths.</p>
+          </div>
+          <div class="info-card">
+            <h3>Small tools</h3>
+            <p>Many focused utilities, composed with pipes and redirects.</p>
+          </div>
+          <div class="info-card">
+            <h3>Multi-user</h3>
+            <p>Strong permission model isolates users and processes.</p>
+          </div>
+          <div class="info-card">
+            <h3>Distributions</h3>
+            <p>Ubuntu/Debian, RHEL/Fedora, Arch, Alpine, etc.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="filesystem">
+        <h2>File System Hierarchy</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Path</th>
+                <th>Contents</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/</td>
+                <td>Root — top of the tree</td>
+              </tr>
+              <tr>
+                <td>/bin, /usr/bin</td>
+                <td>Essential user commands</td>
+              </tr>
+              <tr>
+                <td>/sbin, /usr/sbin</td>
+                <td>System admin commands</td>
+              </tr>
+              <tr>
+                <td>/etc</td>
+                <td>System-wide config files</td>
+              </tr>
+              <tr>
+                <td>/home</td>
+                <td>User home directories</td>
+              </tr>
+              <tr>
+                <td>/root</td>
+                <td>Root user's home</td>
+              </tr>
+              <tr>
+                <td>/tmp</td>
+                <td>Temporary files (cleared on boot)</td>
+              </tr>
+              <tr>
+                <td>/var</td>
+                <td>Variable data: logs, caches, spools</td>
+              </tr>
+              <tr>
+                <td>/proc</td>
+                <td>Virtual FS: kernel &amp; process info</td>
+              </tr>
+              <tr>
+                <td>/dev</td>
+                <td>Device files (disks, terminals)</td>
+              </tr>
+              <tr>
+                <td>/opt</td>
+                <td>Optional third-party software</td>
+              </tr>
+              <tr>
+                <td>/usr/local</td>
+                <td>Locally installed software</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="navigation">
+        <h2>Navigation</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>navigation.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Print working directory</span>
+pwd                           <span class="cm"># /home/alice/projects</span>
+
+<span class="cm"># Change directory</span>
+cd /etc                       <span class="cm"># absolute path</span>
+cd projects/myapp             <span class="cm"># relative path</span>
+cd ..                         <span class="cm"># parent directory</span>
+cd ~                          <span class="cm"># home directory</span>
+cd -                          <span class="cm"># previous directory (toggle)</span>
+
+<span class="cm"># List files</span>
+ls                            <span class="cm"># basic listing</span>
+ls -l                         <span class="cm"># long format (permissions, size, date)</span>
+ls -la                        <span class="cm"># include hidden (dot) files</span>
+ls -lh                        <span class="cm"># human-readable sizes</span>
+ls -lt                        <span class="cm"># sort by modification time</span>
+ls -lR                        <span class="cm"># recursive listing</span>
+
+<span class="cm"># Tree view</span>
+tree                          <span class="cm"># requires: apt install tree</span>
+tree -L 2                     <span class="cm"># max 2 levels deep</span>
+
+<span class="cm"># Find files</span>
+find . -name "*.log"
+find /var -type f -newer /tmp/ref
+find ~ -size +100M            <span class="cm"># files larger than 100 MB</span>
+find . -name "*.py" -exec grep -l "import" {} \;</code></pre>
+        </div>
+      </section>
+
+      <section id="files">
+        <h2>File Operations</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>files.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Create</span>
+touch file.txt                <span class="cm"># create empty file / update timestamp</span>
+mkdir mydir                   <span class="cm"># create directory</span>
+mkdir -p a/b/c                <span class="cm"># create nested directories</span>
+
+<span class="cm"># Copy</span>
+cp file.txt backup.txt
+cp -r src/ dest/              <span class="cm"># recursive (directories)</span>
+cp -p file.txt dest/          <span class="cm"># preserve permissions/timestamps</span>
+
+<span class="cm"># Move / Rename</span>
+mv old.txt new.txt            <span class="cm"># rename</span>
+mv file.txt /tmp/             <span class="cm"># move to directory</span>
+mv dir1/ dir2/                <span class="cm"># rename directory</span>
+
+<span class="cm"># Delete</span>
+rm file.txt
+rm -r mydir/                  <span class="cm"># remove directory and contents</span>
+rm -rf /tmp/junk/             <span class="cm"># force, no confirmation (dangerous!)</span>
+rmdir emptydir                <span class="cm"># only works on empty directories</span>
+
+<span class="cm"># Links</span>
+ln file.txt hardlink.txt      <span class="cm"># hard link (same inode)</span>
+ln -s /path/to/file symlink   <span class="cm"># symbolic link</span>
+ls -la                        <span class="cm"># shows symlink targets with -&gt;</span>
+
+<span class="cm"># Disk usage</span>
+du -sh mydir/                 <span class="cm"># directory size (human-readable)</span>
+df -h                         <span class="cm"># disk usage by filesystem</span></code></pre>
+        </div>
+      </section>
+
+      <section id="content">
+        <h2>File Content</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>content.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Display</span>
+cat file.txt                  <span class="cm"># print entire file</span>
+cat -n file.txt               <span class="cm"># with line numbers</span>
+less file.txt                 <span class="cm"># paginated viewer (q to quit, / to search)</span>
+more file.txt                 <span class="cm"># simpler pager</span>
+
+<span class="cm"># Head / tail</span>
+head file.txt                 <span class="cm"># first 10 lines (default)</span>
+head -n 20 file.txt           <span class="cm"># first 20 lines</span>
+tail file.txt                 <span class="cm"># last 10 lines</span>
+tail -n 50 file.txt           <span class="cm"># last 50 lines</span>
+tail -f /var/log/syslog       <span class="cm"># follow (live updates)</span>
+
+<span class="cm"># Word count</span>
+wc file.txt                   <span class="cm"># lines, words, bytes</span>
+wc -l file.txt                <span class="cm"># lines only</span>
+
+<span class="cm"># Search</span>
+grep "pattern" file.txt
+grep -i "pattern" file.txt    <span class="cm"># case-insensitive</span>
+grep -r "pattern" src/        <span class="cm"># recursive</span>
+grep -n "pattern" file.txt    <span class="cm"># show line numbers</span>
+grep -v "pattern" file.txt    <span class="cm"># invert match (exclude)</span>
+grep -E "regex" file.txt      <span class="cm"># extended regex</span>
+
+<span class="cm"># Diff</span>
+diff file1.txt file2.txt
+diff -u file1.txt file2.txt   <span class="cm"># unified format (used in patches)</span></code></pre>
+        </div>
+      </section>
+
+      <section id="permissions">
+        <h2>Permissions</h2>
+        <div class="callout">
+          <strong>Format:</strong> <code>-rwxrwxrwx</code> — file type, then
+          owner/group/other permissions (r=4, w=2, x=1).
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span>permissions.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># View permissions</span>
+ls -l file.txt
+<span class="cm"># -rw-r--r-- 1 alice staff 1234 Jan 1 12:00 file.txt</span>
+<span class="cm">#  │││└─┤└─┤ │ └───┘ └───┘</span>
+<span class="cm">#  │││  │  │ │ owner  group</span>
+<span class="cm">#  │││  │  └─ other (r--)  = 4</span>
+<span class="cm">#  │││  └──── group (r--)  = 4</span>
+<span class="cm">#  │└┴──────── owner (rw-) = 6</span>
+<span class="cm">#  └─────────── - = regular file, d = dir, l = symlink</span>
+
+<span class="cm"># chmod — change permissions</span>
+chmod 644 file.txt            <span class="cm"># owner rw, group r, other r</span>
+chmod 755 script.sh           <span class="cm"># owner rwx, group rx, other rx</span>
+chmod 600 ~/.ssh/id_rsa       <span class="cm"># owner rw only (private key)</span>
+chmod u+x script.sh           <span class="cm"># add execute for owner</span>
+chmod go-w file.txt           <span class="cm"># remove write from group &amp; other</span>
+chmod -R 755 mydir/           <span class="cm"># recursive</span>
+
+<span class="cm"># chown — change ownership</span>
+chown alice file.txt
+chown alice:developers file.txt
+chown -R alice:staff mydir/
+
+<span class="cm"># Special permissions</span>
+chmod u+s script              <span class="cm"># setuid — runs as file owner</span>
+chmod g+s dir/                <span class="cm"># setgid — new files inherit group</span>
+chmod +t /tmp                 <span class="cm"># sticky bit — only owner can delete</span></code></pre>
+        </div>
+      </section>
+
+      <section id="users">
+        <h2>Users &amp; Groups</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>users.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Identify yourself</span>
+whoami                        <span class="cm"># current user</span>
+id                            <span class="cm"># uid, gid, groups</span>
+groups                        <span class="cm"># groups you belong to</span>
+
+<span class="cm"># Switch user</span>
+su alice                      <span class="cm"># switch to alice (needs password)</span>
+sudo command                  <span class="cm"># run command as root</span>
+sudo -u bob command           <span class="cm"># run as another user</span>
+sudo -i                       <span class="cm"># interactive root shell</span>
+sudo su -                     <span class="cm"># root shell via sudo</span>
+
+<span class="cm"># User management (root/sudo required)</span>
+useradd -m -s /bin/bash alice  <span class="cm"># create user with home &amp; shell</span>
+passwd alice                   <span class="cm"># set password</span>
+usermod -aG sudo alice         <span class="cm"># add to sudo group</span>
+userdel -r alice               <span class="cm"># delete user + home directory</span>
+
+<span class="cm"># Group management</span>
+groupadd developers
+groupdel developers
+gpasswd -a alice developers    <span class="cm"># add alice to group</span>
+gpasswd -d alice developers    <span class="cm"># remove alice from group</span>
+
+<span class="cm"># User info files</span>
+cat /etc/passwd                <span class="cm"># user accounts</span>
+cat /etc/group                 <span class="cm"># group definitions</span>
+last                           <span class="cm"># login history</span>
+who                            <span class="cm"># currently logged in users</span></code></pre>
+        </div>
+      </section>
+
+      <section id="processes">
+        <h2>Processes</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>processes.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># View processes</span>
+ps aux                        <span class="cm"># all processes (detailed)</span>
+ps -ef                        <span class="cm"># full format</span>
+pgrep nginx                   <span class="cm"># PID by name</span>
+pstree                        <span class="cm"># process hierarchy tree</span>
+
+<span class="cm"># Interactive monitors</span>
+top                           <span class="cm"># live process list (q to quit)</span>
+htop                          <span class="cm"># improved top (apt install htop)</span>
+
+<span class="cm"># Kill processes</span>
+kill 1234                     <span class="cm"># send SIGTERM (graceful)</span>
+kill -9 1234                  <span class="cm"># send SIGKILL (force)</span>
+killall nginx                 <span class="cm"># kill by name</span>
+pkill -f "python script.py"   <span class="cm"># kill by full command</span>
+
+<span class="cm"># Background jobs</span>
+command &amp;                     <span class="cm"># run in background</span>
+jobs                          <span class="cm"># list background jobs</span>
+fg %1                         <span class="cm"># bring job 1 to foreground</span>
+bg %1                         <span class="cm"># resume job 1 in background</span>
+Ctrl+Z                        <span class="cm"># suspend current process</span>
+nohup command &amp;               <span class="cm"># survive terminal close</span>
+disown %1                     <span class="cm"># detach from shell</span>
+
+<span class="cm"># Priority</span>
+nice -n 10 command            <span class="cm"># start with lower priority</span>
+renice +5 -p 1234             <span class="cm"># change priority of running process</span>
+
+<span class="cm"># systemd services</span>
+systemctl status nginx
+systemctl start  / stop / restart nginx
+systemctl enable nginx        <span class="cm"># start on boot</span>
+journalctl -u nginx -f        <span class="cm"># follow logs</span></code></pre>
+        </div>
+      </section>
+
+      <section id="packages">
+        <h2>Package Management</h2>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="pkg-apt" data-group="pkg">
+            Debian/Ubuntu (apt)
+          </button>
+          <button class="tab-btn" data-tab="pkg-dnf" data-group="pkg">
+            RHEL/Fedora (dnf)
+          </button>
+          <button class="tab-btn" data-tab="pkg-pacman" data-group="pkg">
+            Arch (pacman)
+          </button>
+        </div>
+        <div id="tab-pkg-apt" class="tab-content active" data-group="pkg">
+          <div class="code-block">
+            <div class="code-header">
+              <span>apt.sh</span><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code>sudo apt update                  <span class="cm"># refresh package index</span>
+sudo apt upgrade                 <span class="cm"># upgrade all packages</span>
+sudo apt install nginx git curl
+sudo apt remove  nginx
+sudo apt purge   nginx           <span class="cm"># remove + config files</span>
+sudo apt autoremove              <span class="cm"># remove unused dependencies</span>
+apt search nginx
+apt show   nginx
+dpkg -l                          <span class="cm"># list installed packages</span>
+dpkg -i package.deb              <span class="cm"># install local .deb</span></code></pre>
+          </div>
+        </div>
+        <div id="tab-pkg-dnf" class="tab-content" data-group="pkg">
+          <div class="code-block">
+            <div class="code-header">
+              <span>dnf.sh</span><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code>sudo dnf check-update
+sudo dnf upgrade
+sudo dnf install nginx
+sudo dnf remove  nginx
+dnf search nginx
+dnf info   nginx
+rpm -qa                          <span class="cm"># list installed packages</span>
+sudo dnf install ./package.rpm   <span class="cm"># local RPM</span></code></pre>
+          </div>
+        </div>
+        <div id="tab-pkg-pacman" class="tab-content" data-group="pkg">
+          <div class="code-block">
+            <div class="code-header">
+              <span>pacman.sh</span><button class="copy-btn">Copy</button>
+            </div>
+            <pre><code>sudo pacman -Syu                 <span class="cm"># sync + upgrade</span>
+sudo pacman -S nginx             <span class="cm"># install</span>
+sudo pacman -R nginx             <span class="cm"># remove</span>
+sudo pacman -Rs nginx            <span class="cm"># remove + unneeded deps</span>
+pacman -Ss nginx                 <span class="cm"># search</span>
+pacman -Qs nginx                 <span class="cm"># search installed</span>
+pacman -Qi nginx                 <span class="cm"># package info</span></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="pipes">
+        <h2>Pipes &amp; Redirection</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>pipes.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Redirection</span>
+command &gt; output.txt          <span class="cm"># stdout → file (overwrite)</span>
+command &gt;&gt; output.txt         <span class="cm"># stdout → file (append)</span>
+command 2&gt; errors.txt         <span class="cm"># stderr → file</span>
+command 2&gt;&amp;1                  <span class="cm"># stderr → stdout</span>
+command &gt; out.txt 2&gt;&amp;1        <span class="cm"># both to file</span>
+command &lt; input.txt           <span class="cm"># stdin from file</span>
+
+<span class="cm"># /dev/null — discard output</span>
+command &gt;/dev/null 2&gt;&amp;1
+
+<span class="cm"># Pipe — stdout of left → stdin of right</span>
+ls -l | grep ".txt"
+cat access.log | sort | uniq -c | sort -rn | head -20
+ps aux | grep nginx | awk '{print $2}'
+
+<span class="cm"># tee — write to file AND pass to next command</span>
+command | tee output.txt | grep "error"
+
+<span class="cm"># xargs — build commands from stdin</span>
+find . -name "*.log" | xargs rm
+cat urls.txt | xargs -I{} curl -O {}
+
+<span class="cm"># Process substitution</span>
+diff &lt;(ls dir1) &lt;(ls dir2)</code></pre>
+        </div>
+      </section>
+
+      <section id="text">
+        <h2>Text Processing</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>text.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># sort</span>
+sort file.txt
+sort -r file.txt              <span class="cm"># reverse</span>
+sort -n numbers.txt           <span class="cm"># numeric sort</span>
+sort -k2 file.txt             <span class="cm"># sort by 2nd field</span>
+
+<span class="cm"># uniq — remove adjacent duplicates</span>
+sort file.txt | uniq
+sort file.txt | uniq -c       <span class="cm"># count occurrences</span>
+sort file.txt | uniq -d       <span class="cm"># only duplicates</span>
+
+<span class="cm"># cut — extract columns</span>
+cut -d: -f1,3 /etc/passwd     <span class="cm"># fields 1 &amp; 3, colon delimiter</span>
+cut -c1-10 file.txt           <span class="cm"># chars 1-10</span>
+
+<span class="cm"># awk — field-based text processing</span>
+awk '{print $1, $3}' file.txt            <span class="cm"># fields 1 and 3</span>
+awk -F: '{print $1}' /etc/passwd         <span class="cm"># custom delimiter</span>
+awk '$3 &gt; 1000 {print $1}' file.txt      <span class="cm"># conditional</span>
+awk '{sum += $2} END {print sum}' data   <span class="cm"># accumulator</span>
+
+<span class="cm"># sed — stream editor</span>
+sed 's/old/new/' file.txt                <span class="cm"># replace first occurrence per line</span>
+sed 's/old/new/g' file.txt              <span class="cm"># replace all</span>
+sed -i 's/http/https/g' config.txt      <span class="cm"># in-place edit</span>
+sed '3,5d' file.txt                     <span class="cm"># delete lines 3-5</span>
+sed -n '10,20p' file.txt                <span class="cm"># print lines 10-20</span>
+
+<span class="cm"># tr — translate/delete characters</span>
+echo "HELLO" | tr 'A-Z' 'a-z'
+echo "hello world" | tr ' ' '_'
+cat file.txt | tr -d '\r'               <span class="cm"># remove Windows line endings</span></code></pre>
+        </div>
+      </section>
+
+      <section id="networking">
+        <h2>Networking</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>networking.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Network info</span>
+ip addr                       <span class="cm"># IP addresses (modern)</span>
+ip route                      <span class="cm"># routing table</span>
+ifconfig                      <span class="cm"># older tool (net-tools)</span>
+hostname -I                   <span class="cm"># IP addresses only</span>
+ss -tulpn                     <span class="cm"># open ports &amp; listening services</span>
+netstat -tulpn                <span class="cm"># older equivalent</span>
+
+<span class="cm"># Connectivity</span>
+ping google.com
+ping -c 4 8.8.8.8             <span class="cm"># 4 packets only</span>
+traceroute google.com
+nslookup google.com           <span class="cm"># DNS lookup</span>
+dig google.com                <span class="cm"># detailed DNS</span>
+host google.com
+
+<span class="cm"># curl — HTTP client</span>
+curl https://api.example.com
+curl -X POST -H "Content-Type: application/json" \
+     -d '{"key":"value"}' https://api.example.com
+curl -o output.zip https://example.com/file.zip
+curl -I https://example.com   <span class="cm"># headers only</span>
+curl -s -o /dev/null -w "%{http_code}" URL  <span class="cm"># status code</span>
+
+<span class="cm"># wget — download files</span>
+wget https://example.com/file.tar.gz
+wget -r https://example.com   <span class="cm"># recursive download</span>
+
+<span class="cm"># Firewall (ufw)</span>
+sudo ufw enable
+sudo ufw allow 22/tcp          <span class="cm"># allow SSH</span>
+sudo ufw allow 80,443/tcp      <span class="cm"># HTTP + HTTPS</span>
+sudo ufw status verbose</code></pre>
+        </div>
+      </section>
+
+      <section id="env">
+        <h2>Environment &amp; Shell</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>env.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Environment variables</span>
+env                           <span class="cm"># print all env vars</span>
+echo $HOME $USER $PATH
+printenv PATH
+
+<span class="cm"># Set variables</span>
+MY_VAR=hello                  <span class="cm"># shell variable (local)</span>
+export MY_VAR=hello           <span class="cm"># environment variable (inherited)</span>
+export PATH="$HOME/.local/bin:$PATH"
+
+<span class="cm"># Persist across sessions — add to shell config</span>
+<span class="cm"># ~/.bashrc    → bash (interactive non-login)</span>
+<span class="cm"># ~/.bash_profile → bash login shell</span>
+<span class="cm"># ~/.zshrc     → zsh</span>
+<span class="cm"># ~/.profile   → POSIX fallback</span>
+
+echo 'export EDITOR=vim' >> ~/.bashrc
+source ~/.bashrc              <span class="cm"># reload without restarting</span>
+
+<span class="cm"># Aliases</span>
+alias ll='ls -lahF'
+alias gs='git status'
+alias ..='cd ..'
+
+<span class="cm"># History</span>
+history
+history | grep ssh
+!42                           <span class="cm"># re-run command 42</span>
+!!                            <span class="cm"># re-run last command</span>
+Ctrl+R                        <span class="cm"># reverse history search</span></code></pre>
+        </div>
+      </section>
+
+      <section id="scripting">
+        <h2>Shell Scripting</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>backup.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code>#!/usr/bin/env bash
+<span class="cm"># Shebang: specify interpreter</span>
+set -euo pipefail             <span class="cm"># exit on error, unset vars, pipe errors</span>
+
+<span class="cm"># Variables</span>
+NAME="World"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+BACKUP_DIR="/backups/${TIMESTAMP}"
+
+<span class="cm"># String interpolation</span>
+echo "Hello, ${NAME}!"
+
+<span class="cm"># Conditionals</span>
+<span class="kw">if</span> [ -d "$BACKUP_DIR" ]; <span class="kw">then</span>
+  echo "Directory exists"
+<span class="kw">elif</span> [ -f "$BACKUP_DIR" ]; <span class="kw">then</span>
+  echo "Is a file"
+<span class="kw">else</span>
+  mkdir -p "$BACKUP_DIR"
+<span class="kw">fi</span>
+
+<span class="cm"># Test operators</span>
+<span class="cm"># [ -e file ]  exists   [ -f file ]  regular file</span>
+<span class="cm"># [ -d dir  ]  directory [ -r file ] readable</span>
+<span class="cm"># [ -z str  ]  empty     [ -n str  ] non-empty</span>
+<span class="cm"># [ a == b  ]  equal     [ a != b  ] not equal</span>
+<span class="cm"># [ a -lt b ]  less than [ a -gt b ] greater than</span>
+
+<span class="cm"># Loops</span>
+<span class="kw">for</span> file <span class="kw">in</span> /var/log/*.log; <span class="kw">do</span>
+  echo "Processing: $file"
+<span class="kw">done</span>
+
+<span class="kw">while</span> [ $count -lt 10 ]; <span class="kw">do</span>
+  count=$((count + 1))
+<span class="kw">done</span>
+
+<span class="cm"># Functions</span>
+<span class="fn">log</span>() {
+  echo "[$(date '+%T')] $*" | tee -a /var/log/myscript.log
+}
+
+<span class="fn">backup_dir</span>() {
+  local src="$1"
+  local dest="$2"
+  tar czf "${dest}.tar.gz" "$src"
+  <span class="fn">log</span> "Backed up $src to ${dest}.tar.gz"
+}
+
+<span class="fn">log</span> "Starting backup"
+<span class="fn">backup_dir</span> /etc /backups/etc
+
+<span class="cm"># Exit codes</span>
+command && echo "success" || echo "failed"
+command; echo "Exit code: $?"</code></pre>
+        </div>
+      </section>
+
+      <section id="cron">
+        <h2>Cron Jobs</h2>
+        <p>
+          Schedule recurring tasks with cron. Fields: minute hour day-of-month
+          month day-of-week.
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>crontab</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Edit crontab</span>
+crontab -e
+crontab -l                    <span class="cm"># list current jobs</span>
+crontab -r                    <span class="cm"># remove all jobs</span>
+
+<span class="cm"># Format:  MIN HOUR DOM MON DOW COMMAND</span>
+<span class="cm"># MIN  0-59    HOUR 0-23</span>
+<span class="cm"># DOM  1-31    MON  1-12</span>
+<span class="cm"># DOW  0-7 (0 and 7 = Sunday)</span>
+
+<span class="cm"># Examples</span>
+<span class="str">0 * * * *</span>      /script.sh         <span class="cm"># every hour at :00</span>
+<span class="str">*/15 * * * *</span>   /health-check.sh   <span class="cm"># every 15 minutes</span>
+<span class="str">0 2 * * *</span>      /backup.sh         <span class="cm"># daily at 2:00 AM</span>
+<span class="str">0 2 * * 0</span>      /weekly.sh         <span class="cm"># every Sunday at 2 AM</span>
+<span class="str">0 0 1 * *</span>      /monthly.sh        <span class="cm"># 1st of every month</span>
+<span class="str">@reboot</span>         /startup.sh        <span class="cm"># on system startup</span>
+
+<span class="cm"># Redirect output</span>
+<span class="str">0 3 * * *</span> /backup.sh >> /var/log/backup.log 2>&amp;1
+
+<span class="cm"># systemd timers (modern alternative)</span>
+systemctl list-timers</code></pre>
+        </div>
+      </section>
+
+      <section id="vim">
+        <h2>Vim</h2>
+        <p>
+          Vim is a modal text editor. It has modes:
+          <strong>Normal</strong> (default), <strong>Insert</strong> (i),
+          <strong>Visual</strong> (v), <strong>Command</strong> (:).
+        </p>
+        <div class="code-block">
+          <div class="code-header">
+            <span>vim cheatsheet</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Open / exit</span>
+vim file.txt                  <span class="cm"># open file</span>
+:w                            <span class="cm"># save</span>
+:q                            <span class="cm"># quit</span>
+:wq  or  :x                   <span class="cm"># save + quit</span>
+:q!                           <span class="cm"># quit without saving</span>
+ZZ                            <span class="cm"># save + quit (normal mode)</span>
+
+<span class="cm"># Mode switching</span>
+i                             <span class="cm"># insert before cursor</span>
+a                             <span class="cm"># insert after cursor</span>
+o                             <span class="cm"># new line below, insert</span>
+O                             <span class="cm"># new line above, insert</span>
+v                             <span class="cm"># visual (character) mode</span>
+V                             <span class="cm"># visual line mode</span>
+Ctrl+v                        <span class="cm"># visual block mode</span>
+Esc                           <span class="cm"># return to normal mode</span>
+
+<span class="cm"># Navigation (normal mode)</span>
+h j k l                       <span class="cm"># left down up right</span>
+w / b                         <span class="cm"># next / prev word</span>
+0 / $                         <span class="cm"># start / end of line</span>
+gg / G                        <span class="cm"># first / last line</span>
+:42                           <span class="cm"># go to line 42</span>
+Ctrl+f / Ctrl+b               <span class="cm"># page down / up</span>
+
+<span class="cm"># Edit (normal mode)</span>
+dd                            <span class="cm"># delete line</span>
+yy                            <span class="cm"># yank (copy) line</span>
+p                             <span class="cm"># paste after</span>
+u                             <span class="cm"># undo</span>
+Ctrl+r                        <span class="cm"># redo</span>
+x                             <span class="cm"># delete character</span>
+cw                            <span class="cm"># change word</span>
+
+<span class="cm"># Search &amp; replace</span>
+/pattern                      <span class="cm"># search forward</span>
+n / N                         <span class="cm"># next / prev match</span>
+:%s/old/new/g                 <span class="cm"># replace all in file</span>
+:5,10s/old/new/g              <span class="cm"># replace in lines 5-10</span></code></pre>
+        </div>
+      </section>
+
+      <section id="ssh">
+        <h2>SSH</h2>
+        <div class="code-block">
+          <div class="code-header">
+            <span>ssh.sh</span><button class="copy-btn">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Connect</span>
+ssh user@hostname
+ssh user@192.168.1.100
+ssh -p 2222 user@host          <span class="cm"># custom port</span>
+ssh -i ~/.ssh/id_rsa user@host <span class="cm"># specific key</span>
+
+<span class="cm"># Key management</span>
+ssh-keygen -t ed25519 -C "alice@example.com"
+<span class="cm"># creates ~/.ssh/id_ed25519 and ~/.ssh/id_ed25519.pub</span>
+
+ssh-copy-id user@host          <span class="cm"># copy public key to server</span>
+<span class="cm"># or manually: cat ~/.ssh/id_ed25519.pub | ssh user@host \</span>
+<span class="cm">#   "mkdir -p ~/.ssh &amp;&amp; cat >> ~/.ssh/authorized_keys"</span>
+
+<span class="cm"># SSH config (~/.ssh/config)</span>
+<span class="cm">Host myserver</span>
+<span class="cm">    HostName 192.168.1.100</span>
+<span class="cm">    User alice</span>
+<span class="cm">    IdentityFile ~/.ssh/id_ed25519</span>
+<span class="cm">    Port 2222</span>
+
+ssh myserver                   <span class="cm"># uses config above</span>
+
+<span class="cm"># File transfer</span>
+scp file.txt user@host:/path/
+scp -r dir/ user@host:/remote/
+rsync -avz src/ user@host:dest/ <span class="cm"># fast, incremental sync</span>
+
+<span class="cm"># Tunnels</span>
+ssh -L 5432:db-host:5432 bastion  <span class="cm"># local port forwarding</span>
+ssh -R 8080:localhost:80 server   <span class="cm"># remote port forwarding</span>
+ssh -D 1080 user@host             <span class="cm"># SOCKS proxy</span>
+
+<span class="cm"># Persistent sessions</span>
+tmux new -s main
+tmux attach -t main
+screen -S session</code></pre>
+        </div>
+      </section>
+
+      <footer>
+        <p>← <a href="index.html">Back to Home</a></p>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
